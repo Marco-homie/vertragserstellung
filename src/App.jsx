@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 
 // ─── TIER DATA ───────────────────────────────────────────────────────────────────
 const TIER_DATA = {
-  Bronze: {
+  'Service-Paket 1': {
     preis: '0,00',
     preisLabel: 'Inklusive',
     tagline: 'Solider Einstieg für Teams mit Standard-Bedarf',
@@ -10,11 +10,11 @@ const TIER_DATA = {
       ['Erreichbarkeit', 'Mo–Fr 09:00–17:00 Uhr'],
       ['Reaktionszeit', 'Innerhalb von 1 Werktag'],
       ['Support-Kanäle', 'E-Mail und Online-Ticket-System'],
-      ['Account-Gespräch', 'Quartalweise 30 min'],
+      ['Account-Gespräch', 'Quartalweise Performance-Review'],
       ['Updates & Anpassungen', 'Standard-Turnus, nach Verfügbarkeit'],
     ],
   },
-  Silber: {
+  'Service-Paket 2': {
     preis: '100,00',
     preisLabel: '100 € / Monat',
     tagline: 'Für wachsende Teams mit aktivem Bedarf',
@@ -22,11 +22,11 @@ const TIER_DATA = {
       ['Erreichbarkeit', 'Mo–Fr 08:00–20:00, Sa 10:00–16:00 Uhr'],
       ['Reaktionszeit', 'Mo–Fr <4h, Samstag <8h'],
       ['Support-Kanäle', 'E-Mail, Telefon und Ticket-System'],
-      ['Account-Gespräch', 'Monatlich 30 min mit Account-Manager'],
+      ['Account-Gespräch', 'Monatliche Performance-Review'],
       ['Updates & Anpassungen', 'Priorisierte Umsetzung im Standard-Turnus'],
     ],
   },
-  Gold: {
+  'Service-Paket 3': {
     preis: '250,00',
     preisLabel: '250 € / Monat',
     tagline: 'Maximale Betreuung für anspruchsvolle Kunden',
@@ -34,7 +34,7 @@ const TIER_DATA = {
       ['Erreichbarkeit', 'Mo–So 08:00–20:00 Uhr'],
       ['Reaktionszeit', 'Mo–Fr <2h, Sa–So <4h'],
       ['Support-Kanäle', 'E-Mail, Telefon, Ticket und dedizierter Account-Manager'],
-      ['Account-Gespräch', 'Wöchentlich 30 min + monatliche Performance-Review'],
+      ['Account-Gespräch', 'Wöchentliche Performance-Review'],
       ['Updates & Anpassungen', 'Priorisierte Umsetzung inkl. individueller Erweiterungen'],
     ],
   },
@@ -42,7 +42,7 @@ const TIER_DATA = {
 
 // ─── CONTRACT HTML BUILDER ────────────────────────────────────────────────────
 function buildContractHTML(d) {
-  const tier = TIER_DATA[d.serviceLevel] || TIER_DATA.Bronze
+  const tier = TIER_DATA[d.serviceLevel] || TIER_DATA['Service-Paket 1']
   const serviceRow = `
     <tr>
       <td style="padding:8px;border:1px solid #ccc;font-weight:bold">3</td>
@@ -392,7 +392,7 @@ export default function App() {
     hatZweitenUnterzeichner: false, unterzeichner2Name: '', unterzeichner2Position: '',
     kiAssistenten: '', landingpages: '', produktseiten: '', nachrichtenProMonat: '', preisProNachricht: '0,05',
     setupPreis: '', monatlichPreis: '',
-    serviceLevel: 'Bronze',
+    serviceLevel: 'Service-Paket 1',
     vertragslaufzeit: '12', testphase: 'keine', sonderkuendigungsrecht: '2',
     vertragsdatum: new Date().toLocaleDateString('de-DE'),
     gfName: 'Marco Werner', gfPosition: 'Geschäftsführer',
@@ -643,9 +643,9 @@ baoo Sales Team`)
             </Row>
           </Card>
 
-          <Card title="Enterprise Customer Service Level" hint="Bronze ist immer inklusive – Silber und Gold als Upgrade buchbar">
+          <Card title="Enterprise Customer Service Level" hint="Service-Paket 1 ist immer inklusive – Paket 2 und 3 als Upgrade buchbar">
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginTop: 4 }}>
-              {['Bronze', 'Silber', 'Gold'].map(tier => {
+              {Object.keys(TIER_DATA).map(tier => {
                 const t = TIER_DATA[tier]
                 const active = f.serviceLevel === tier
                 return (
@@ -670,7 +670,7 @@ baoo Sales Team`)
                     <div style={{ borderTop: '1px solid #E2E8F0', paddingTop: 10 }}>
                       <p style={{ fontSize: 10, color: '#94A3B8', margin: '0 0 2px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Monatlich (netto)</p>
                       <p style={{ fontSize: 16, fontWeight: 700, color: active ? '#2563EB' : '#1E293B', margin: 0 }}>
-                        {tier === 'Bronze' ? <span style={{ fontSize: 13, fontWeight: 500, color: '#059669' }}>Inklusive</span> : `${t.preis} €`}
+                        {tier === 'Service-Paket 1' ? <span style={{ fontSize: 13, fontWeight: 500, color: '#059669' }}>Inklusive</span> : `${t.preis} €`}
                       </p>
                     </div>
                   </div>
