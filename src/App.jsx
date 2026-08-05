@@ -654,11 +654,10 @@ baoo Sales Team`)
                     borderRadius: 10, padding: '14px 14px 12px', cursor: 'pointer',
                     background: active ? '#EFF6FF' : '#fff', transition: 'all 0.15s',
                   }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
-                      <span style={{ fontSize: 13, fontWeight: 700, color: active ? '#2563EB' : '#334155' }}>{tier}</span>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>                      <span style={{ fontSize: 13, fontWeight: 700, color: active ? '#2563EB' : '#334155' }}>{tier}</span>
                       {active && <span style={{ fontSize: 10, background: '#2563EB', color: '#fff', borderRadius: 4, padding: '2px 6px', fontWeight: 600 }}>✓</span>}
                     </div>
-                    <p style={{ fontSize: 11, color: '#94A3B8', marginBottom: 10 }}>{t.tagline}</p>
+                    <p style={{ fontSize: 11, color: '#94A3B8', marginBottom: 10, display: 'none' }}>{t.tagline}</p>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 5, marginBottom: 12 }}>
                       {t.features.map(([k, v]) => (
                         <div key={k}>
