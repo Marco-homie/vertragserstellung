@@ -16,7 +16,7 @@ const TIER_DATA = {
   },
   Silber: {
     preis: '100,00',
-    preisLabel: '100 € / Monat',
+    preisLabel: '100 € / Monat',
     tagline: 'Für wachsende Teams mit aktivem Bedarf',
     features: [
       ['Erreichbarkeit', 'Mo–Fr 08:00–20:00, Sa 10:00–16:00 Uhr'],
@@ -28,7 +28,7 @@ const TIER_DATA = {
   },
   Gold: {
     preis: '250,00',
-    preisLabel: '250 € / Monat',
+    preisLabel: '250 € / Monat',
     tagline: 'Maximale Betreuung für anspruchsvolle Kunden',
     features: [
       ['Erreichbarkeit', 'Mo–So 08:00–20:00 Uhr'],
@@ -127,7 +127,7 @@ ${(parseFloat(d.setupPreis.replace(',','.')) || 0) > 0 ? '<p>Der Auftragnehmer w
   – KI initial auf Produkte, Leistungen und Inhalte des Auftraggebers trainieren und fine-tunen<br/>
   – Dialog und Kommunikation anpassen<br/>
   – Chat-Interface auf CI des Auftraggebers anpassen<br/>
-  – Technische Integrationslösung bereitstellen (z. B. JavaScript Snippet, iFrame oder individuelle Schnittstelle)<br/>
+  – Technische Integrationslösung bereitstellen (z. B. JavaScript Snippet, iFrame oder individuelle Schnittstelle)<br/>
   – Dashboard für Administration bereitstellen</td>
   <td style="text-align:center">1</td><td style="text-align:center">Pauschal</td><td><strong>${d.setupPreis}&nbsp;€</strong></td>
 </tr>
@@ -192,7 +192,13 @@ ${sonderkuendigungsText}
 <h2>§11 Geheimhaltung und Vertraulichkeit</h2>
 <p>Kundendaten werden nicht mit anderen Vertragspartnern ausgetauscht (Mandantentrennung). Nicht-öffentliche Daten werden nur für den laufenden Chat-Betrieb genutzt.</p>
 
-<h2>§12 Schlussbestimmungen</h2>
+${d.praxisberichtZustimmung ? `
+<h2>§12 Referenzkundenstatus und Praxisbericht</h2>
+<p>Der Auftraggeber erklärt sich einverstanden, dass der Auftragnehmer die Zusammenarbeit im Rahmen eines Praxisberichts (Use-Case) dokumentieren und veröffentlichen darf. Der Auftragnehmer ist berechtigt, den Unternehmensnamen, das Logo sowie eine Beschreibung des Einsatzszenarios und erzielter Ergebnisse in Marketingmaterialien, auf der Website, in Präsentationen, sozialen Medien und auf Fachmessen zu verwenden.</p>
+<p>Der Auftragnehmer informiert den Auftraggeber vor der Erstveröffentlichung des Praxisberichts.</p>
+<p>Diese Einwilligung ist freiwillig, kostenlos und jederzeit in Textform widerrufbar. Der Widerruf gilt für künftige Veröffentlichungen; bereits veröffentlichte Materialien bleiben davon unberührt. Die Erteilung oder Verweigerung dieser Einwilligung hat keine Auswirkungen auf die vertraglichen Leistungen oder die Vergütung.</p>
+` : ''}
+<h2>${d.praxisberichtZustimmung ? '§13' : '§12'} Schlussbestimmungen</h2>
 <p>Mündliche Nebenabreden bestehen nicht. Änderungen bedürfen der Schriftform. Es gilt deutsches Recht.</p>
 
 <h2 style="margin-top:40px">Unterschriftenseite</h2>
@@ -391,6 +397,7 @@ export default function App() {
     vertragsdatum: new Date().toLocaleDateString('de-DE'),
     gfName: 'Marco Werner', gfPosition: 'Geschäftsführer',
     gfEmail: 'marco@yourhomie.ai', senderEmail: '',
+    praxisberichtZustimmung: true,
   })
   const set = (k, v) => setF(p => ({ ...p, [k]: v }))
 
@@ -437,6 +444,7 @@ LEISTUNGSUMFANG
 UNTERZEICHNER KUNDENSEITE:
   ${f.unterzeichner1Name} (${f.unterzeichner1Position})${f.hatZweitenUnterzeichner ? `\n  ${f.unterzeichner2Name} (${f.unterzeichner2Position})` : ''}
 
+Sales Manager:    ${f.senderEmail}
 ────────────────────────────
 Das vollständige Vertragsdokument ist als HTML-Datei im Anhang beigefügt.
 Bitte prüfe die Daten und zeichne den Vertrag ab.
@@ -453,7 +461,7 @@ baoo Sales Team`)
     const apiKey = localStorage.getItem('baoo_api_key')
     if (!apiKey) { setShowSettings(true); return }
     setSendState('sending'); setSendMsg('')
-    const emailText = `Hallo,\n\nein neuer ENTERPRISE-Vertrag für ${f.firmenname} wartet auf deine Unterzeichnung.\n\nKunde: ${f.firmenname}, ${f.plz} ${f.stadt}\nSetup: ${f.setupPreis} €  |  Monatlich: ${f.monatlichPreis} €  |  Service Level ${f.serviceLevel}: ${TIER_DATA[f.serviceLevel]?.preis || '0,00'} €\nKI-Assistenzen: ${f.kiAssistenten}, Nachrichten/Mon: ${f.nachrichtenProMonat}\n\nBitte Vertrag prüfen und abzeichnen.\n\nViele Grüße, baoo Sales Team`
+    const emailText = `Hallo,\n\nein neuer ENTERPRISE-Vertrag für ${f.firmenname} wartet auf deine Unterzeichnung.\n\nKunde: ${f.firmenname}, ${f.plz} ${f.stadt}\nSetup: ${f.setupPreis} €  |  Monatlich: ${f.monatlichPreis} €  |  Service Level ${f.serviceLevel}: ${TIER_DATA[f.serviceLevel]?.preis || '0,00'} €\nKI-Assistenzen: ${f.kiAssistenten}, Nachrichten/Mon: ${f.nachrichtenProMonat}\nSales Manager: ${f.senderEmail}\n\nBitte Vertrag prüfen und abzeichnen.\n\nViele Grüße, baoo Sales Team`
     try {
       const res = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
@@ -478,7 +486,7 @@ baoo Sales Team`)
   const step1ok = f.firmenname && f.strasse && f.hausnummer && f.plz && f.stadt && f.unterzeichner1Name && f.unterzeichner1Position
   const step2ok = f.kiAssistenten && f.landingpages && f.produktseiten && f.nachrichtenProMonat
   const step3ok = f.setupPreis && f.monatlichPreis
-  const step4ok = f.vertragsdatum && f.gfEmail
+  const step4ok = f.vertragsdatum && f.gfEmail && f.senderEmail
 
   const hasApiKey = !!localStorage.getItem('baoo_api_key')
 
@@ -748,12 +756,31 @@ baoo Sales Team`)
             </Row>
           </Card>
 
+          <Card title="Praxisbericht-Zustimmung" hint="Einwilligung zur Veröffentlichung eines Use-Case-Berichts – kostenlos, jederzeit widerrufbar">
+            <div style={{ display: 'flex', gap: 10 }}>
+              {[{ value: true, label: 'Ja' }, { value: false, label: 'Nein' }].map(opt => (
+                <button key={String(opt.value)} onClick={() => set('praxisberichtZustimmung', opt.value)} style={{
+                  padding: '9px 28px', borderRadius: 20, fontSize: 13.5,
+                  fontWeight: f.praxisberichtZustimmung === opt.value ? 600 : 400,
+                  background: f.praxisberichtZustimmung === opt.value ? '#2563EB' : '#F1F5F9',
+                  color: f.praxisberichtZustimmung === opt.value ? '#fff' : '#475569',
+                  border: f.praxisberichtZustimmung === opt.value ? '1.5px solid #2563EB' : '1.5px solid #E2E8F0',
+                  cursor: 'pointer', transition: 'all 0.15s',
+                }}>
+                  {f.praxisberichtZustimmung === opt.value && <span style={{ marginRight: 6 }}>✓</span>}
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          </Card>
+
           <Card title="Versand an Geschäftsführung">
             <Field label="E-Mail Geschäftsführer (Empfänger)" required
               hint="Der Vertrag wird per E-Mail an diese Adresse weitergeleitet">
               <Inp value={f.gfEmail} onChange={v => set('gfEmail', v)} placeholder="gf@baoo.de" type="email" />
             </Field>
-            <Field label="Deine E-Mail (Sales Manager)" hint="Optional – zur eigenen Dokumentation">
+            <Field label="Deine E-Mail (Sales Manager)" required
+              hint="Wird im Vertrag als Ansprechpartner hinterlegt">
               <Inp value={f.senderEmail} onChange={v => set('senderEmail', v)} placeholder="sales@baoo.de" type="email" />
             </Field>
           </Card>
