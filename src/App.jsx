@@ -780,7 +780,7 @@ baoo Sales Team`)
               <Inp value={f.gfEmail} onChange={v => set('gfEmail', v)} placeholder="gf@baoo.de" type="email" />
             </Field>
             <Field label="Deine E-Mail (Sales Manager)" required
-              hint="Wird im Vertrag als Ansprechpartner hinterlegt">
+              hint="Für die interne Kommunikation">
               <Inp value={f.senderEmail} onChange={v => set('senderEmail', v)} placeholder="sales@baoo.de" type="email" />
             </Field>
           </Card>
