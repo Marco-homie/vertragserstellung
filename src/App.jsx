@@ -424,28 +424,26 @@ export default function App() {
 
   const openPrint = () => {
     try {
-      const win = window.open('', '_blank')
+      const blob = new Blob([contractHTML], { type: 'text/html;charset=utf-8' })
+      const url  = URL.createObjectURL(blob)
+      const win  = window.open(url, '_blank')
       if (!win) { setSendMsg('Popup-Blocker aktiv – bitte kurz deaktivieren und nochmal klicken.'); return }
-      win.document.write(contractHTML)
-      win.document.close()
-      setTimeout(() => { win.focus(); win.print() }, 600)
+      setTimeout(() => URL.revokeObjectURL(url), 60000)
     } catch(e) { setSendMsg('PDF-Export fehlgeschlagen: ' + e.message) }
   }
 
-  const downloadWord = () => {
+  const downloadGoogleDocs = () => {
     try {
-      const body = contractHTML.replace(/^[\s\S]*?<body[^>]*>/i, '').replace(/<\/body>[\s\S]*$/i, '')
-      const doc  = '<!DOCTYPE html><html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"></head><body>' + body + '</body></html>'
-      const blob = new Blob(['\ufeff', doc], { type: 'application/msword' })
+      const blob = new Blob([contractHTML], { type: 'text/html;charset=utf-8' })
       const url  = URL.createObjectURL(blob)
       const a    = Object.assign(document.createElement('a'), {
         href: url,
-        download: `Vertrag_${(f.firmenname || 'Kunde').replace(/\s+/g, '_')}_${new Date().toISOString().slice(0,10)}.doc`,
+        download: `Vertrag_${(f.firmenname || 'Kunde').replace(/\s+/g, '_')}_${new Date().toISOString().slice(0,10)}.html`,
         style: 'display:none',
       })
       document.body.appendChild(a); a.click()
       setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url) }, 500)
-    } catch(e) { setSendMsg('Word-Export fehlgeschlagen: ' + e.message) }
+    } catch(e) { setSendMsg('Download fehlgeschlagen: ' + e.message) }
   }
 
   // Open native email client with pre-filled content
@@ -858,7 +856,7 @@ baoo Sales Team`)
           {/* Action bar */}
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 20, alignItems: 'center' }}>
             <Btn variant="secondary" onClick={openPrint}>⬇ Als PDF speichern</Btn>
-            <Btn variant="secondary" onClick={downloadWord}>⬇ Word (.doc) herunterladen</Btn>
+            <Btn variant="secondary" onClick={downloadGoogleDocs}>⬇ Google Docs (.html)</Btn>
 
             {sendState !== 'sent' ? (<>
               <Btn onClick={openMailto} variant="secondary">
@@ -910,11 +908,15 @@ baoo Sales Team`)
               padding: '9px 20px', borderRadius: 8, fontSize: 13.5, fontWeight: 600, cursor: 'pointer',
               background: '#1E3A5F', color: '#fff', border: 'none',
             }}>⬇ Als PDF speichern</button>
-            <button onClick={downloadWord} style={{
+            <button onClick={downloadGoogleDocs} style={{
               padding: '9px 20px', borderRadius: 8, fontSize: 13.5, fontWeight: 600, cursor: 'pointer',
               background: '#fff', color: '#1E3A5F', border: '1.5px solid #1E3A5F',
-            }}>⬇ Word (.doc)</button>
+            }}>⬇ Google Docs (.html)</button>
+            <span style={{ fontSize: 12, color: '#94A3B8' }}>→ In Google Drive hochladen → mit Google Docs öffnen</span>
           </div>
+          <p style={{ fontSize: 12, color: '#94A3B8', margin: '-10px 0 16px' }}>
+            💡 PDF-Tipp: Im Druckdialog unter „Weitere Einstellungen" → <strong>Kopf- und Fußzeilen deaktivieren</strong>
+          </p>
 
           <div style={{ marginTop: 16 }}>
             <Btn variant="secondary" onClick={() => setStep(4)}>← Bearbeiten</Btn>
