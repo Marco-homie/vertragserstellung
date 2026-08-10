@@ -423,23 +423,29 @@ export default function App() {
   const goPreview = () => { setContractHTML(buildContractHTML(f)); setStep(5) }
 
   const openPrint = () => {
-    const win = window.open('', '_blank')
-    win.document.write(contractHTML)
-    win.document.close()
-    setTimeout(() => { win.focus(); win.print() }, 400)
+    try {
+      const win = window.open('', '_blank')
+      if (!win) { setSendMsg('Popup-Blocker aktiv – bitte kurz deaktivieren und nochmal klicken.'); return }
+      win.document.write(contractHTML)
+      win.document.close()
+      setTimeout(() => { win.focus(); win.print() }, 600)
+    } catch(e) { setSendMsg('PDF-Export fehlgeschlagen: ' + e.message) }
   }
 
   const downloadWord = () => {
-    const wordDoc = '<!DOCTYPE html><html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"></head><body>'
-      + contractHTML.replace(/^[\s\S]*?<body[^>]*>/i, '').replace(/<\/body>[\s\S]*$/i, '')
-      + '</body></html>'
-    const blob = new Blob(['\ufeff', wordDoc], { type: 'application/msword' })
-    const url  = URL.createObjectURL(blob)
-    const a    = document.createElement('a')
-    a.href = url
-    a.download = `Vertrag_${(f.firmenname || 'Kunde').replace(/\s+/g, '_')}_${new Date().toISOString().slice(0,10)}.doc`
-    document.body.appendChild(a); a.click()
-    setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url) }, 200)
+    try {
+      const body = contractHTML.replace(/^[\s\S]*?<body[^>]*>/i, '').replace(/<\/body>[\s\S]*$/i, '')
+      const doc  = '<!DOCTYPE html><html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"></head><body>' + body + '</body></html>'
+      const blob = new Blob(['\ufeff', doc], { type: 'application/msword' })
+      const url  = URL.createObjectURL(blob)
+      const a    = Object.assign(document.createElement('a'), {
+        href: url,
+        download: `Vertrag_${(f.firmenname || 'Kunde').replace(/\s+/g, '_')}_${new Date().toISOString().slice(0,10)}.doc`,
+        style: 'display:none',
+      })
+      document.body.appendChild(a); a.click()
+      setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url) }, 500)
+    } catch(e) { setSendMsg('Word-Export fehlgeschlagen: ' + e.message) }
   }
 
   // Open native email client with pre-filled content
@@ -895,7 +901,22 @@ baoo Sales Team`)
               title="Vertragsvorschau" sandbox="allow-same-origin" />
           </div>
 
-          <div style={{ marginTop: 20 }}>
+          {/* Download bar below preview */}
+          <div style={{ marginTop: 16, padding: '16px 20px', background: '#F8FAFC',
+            border: '1px solid #E2E8F0', borderRadius: 10, display: 'flex', gap: 12,
+            alignItems: 'center', flexWrap: 'wrap' }}>
+            <span style={{ fontSize: 12.5, fontWeight: 600, color: '#64748B', marginRight: 4 }}>Dokument herunterladen:</span>
+            <button onClick={openPrint} style={{
+              padding: '9px 20px', borderRadius: 8, fontSize: 13.5, fontWeight: 600, cursor: 'pointer',
+              background: '#1E3A5F', color: '#fff', border: 'none',
+            }}>⬇ Als PDF speichern</button>
+            <button onClick={downloadWord} style={{
+              padding: '9px 20px', borderRadius: 8, fontSize: 13.5, fontWeight: 600, cursor: 'pointer',
+              background: '#fff', color: '#1E3A5F', border: '1.5px solid #1E3A5F',
+            }}>⬇ Word (.doc)</button>
+          </div>
+
+          <div style={{ marginTop: 16 }}>
             <Btn variant="secondary" onClick={() => setStep(4)}>← Bearbeiten</Btn>
           </div>
         </>)}
