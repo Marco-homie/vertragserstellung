@@ -68,15 +68,18 @@ function buildContractHTML(d) {
     <p>Dem Auftraggeber wird ein Sonderkündigungsrecht von ${d.sonderkuendigungsrecht} Monaten ab Vertragsabschluss eingeräumt. Innerhalb dieses Zeitraums kann der Auftraggeber den Vertrag jederzeit in Textform kündigen, ohne dass weitere Kosten entstehen. Die Grundlaufzeit von ${d.vertragslaufzeit} Monaten beginnt erst nach Ablauf des Sonderkündigungsrechts.</p>`
 
   const sig2 = d.hatZweitenUnterzeichner ? `
-    <tr>
-      <td style="padding:20px;border:1px solid #ccc;vertical-align:top;width:50%">
-        <em>Optional 2. Unterzeichner</em><br/>__________________________<br/><strong>${d.firmenname}</strong><br/><br/>
-        Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${d.unterzeichner2Name}<br/>Position: ${d.unterzeichner2Position}<br/>Datum: __________
-      </td>
-      <td style="padding:20px;border:1px solid #ccc;vertical-align:top;width:50%">
-        __________________________<br/><br/>Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>Position:<br/>Datum: __________
-      </td>
-    </tr>` : ''
+<div style="margin-top:32px;display:flex;gap:0">
+  <div style="width:50%;padding-right:40px">
+    <div style="border-bottom:1px solid #333;width:220px;margin-bottom:7px">&nbsp;</div>
+    <div style="font-size:10pt">${d.firmenname}</div>
+    <div style="font-size:10pt;color:#555">${d.unterzeichner2Name} · ${d.unterzeichner2Position}</div>
+  </div>
+  <div style="width:50%">
+    <div style="border-bottom:1px solid #333;width:220px;margin-bottom:7px">&nbsp;</div>
+    <div style="font-size:10pt">baoo Technologies GmbH</div>
+    <div style="font-size:10pt;color:#555">&nbsp;</div>
+  </div>
+</div>` : ''
 
   return `<!DOCTYPE html>
 <html lang="de">
@@ -212,22 +215,22 @@ ${d.sonstiges ? `
 <p>${d.sonstiges.replace(/\n/g, '<br/>')}</p>
 ` : ''}
 
-<h2 style="margin-top:40px">Unterschriftenseite</h2>
-<table>
-<tr>
-  <td style="width:50%;padding:22px;vertical-align:top;border:1px solid #ccc">
-    __________________________<br/>
-    <strong>${d.firmenname}</strong><br/><br/>
-    Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${d.unterzeichner1Name}<br/>Position: ${d.unterzeichner1Position}<br/>Datum: __________
-  </td>
-  <td style="width:50%;padding:22px;vertical-align:top;border:1px solid #ccc">
-    __________________________<br/>
-    <strong>baoo Technologies GmbH</strong><br/><br/>
-    Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${d.gfName}<br/>Position: ${d.gfPosition}<br/>Datum: __________
-  </td>
-</tr>
+<p style="margin-top:48px;font-size:10pt;color:#555">Köln, den ${d.vertragsdatum}</p>
+
+<div style="margin-top:32px;display:flex;gap:0">
+  <div style="width:50%;padding-right:40px">
+    <div style="border-bottom:1px solid #333;width:220px;margin-bottom:7px">&nbsp;</div>
+    <div style="font-size:10pt">${d.firmenname}</div>
+    <div style="font-size:10pt;color:#555">${d.unterzeichner1Name} · ${d.unterzeichner1Position}</div>
+  </div>
+  <div style="width:50%">
+    <div style="border-bottom:1px solid #333;width:220px;margin-bottom:7px">&nbsp;</div>
+    <div style="font-size:10pt">baoo Technologies GmbH</div>
+    <div style="font-size:10pt;color:#555">${d.gfName} · ${d.gfPosition}</div>
+  </div>
+</div>
+
 ${sig2}
-</table>
 <p style="margin-top:28px;font-size:9pt;color:#888">baoo Technologies GmbH &nbsp;|&nbsp; c/o Projekton, Salierring 32, 50677 Köln</p>
 </body></html>`
 }
