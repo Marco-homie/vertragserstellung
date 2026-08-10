@@ -643,6 +643,18 @@ baoo Sales Team`)
             </div>
           </div>
 
+          <div style={{
+            borderLeft: '3px solid #D97706', background: '#FFFBEB',
+            borderRadius: '0 6px 6px 0', padding: '11px 16px',
+            marginBottom: 18, display: 'flex', gap: 12, alignItems: 'flex-start',
+          }}>
+            <span style={{ fontSize: 18, lineHeight: 1 }}>⚠️</span>
+            <div>
+              <p style={{ fontSize: 13, fontWeight: 600, color: '#92400E', margin: '0 0 2px' }}>Wir haben nichts zu verschenken.</p>
+              <p style={{ fontSize: 13, color: '#B45309', margin: 0 }}>Bitte prüfe die Zahlen sorgfältig — wie hoch müssen sie wirklich sein?</p>
+            </div>
+          </div>
+
           <NavRow onBack={() => setStep(1)} onNext={() => setStep(3)} nextDisabled={!step2ok} />
         </>)}
 
