@@ -424,7 +424,8 @@ export default function App() {
 
   const openPrint = () => {
     try {
-      const blob = new Blob([contractHTML], { type: 'text/html;charset=utf-8' })
+      const printHTML = contractHTML.replace('</body>', '<script>setTimeout(function(){window.focus();window.print();},500);<\/script></body>')
+      const blob = new Blob([printHTML], { type: 'text/html;charset=utf-8' })
       const url  = URL.createObjectURL(blob)
       const win  = window.open(url, '_blank')
       if (!win) { setSendMsg('Popup-Blocker aktiv – bitte kurz deaktivieren und nochmal klicken.'); return }
