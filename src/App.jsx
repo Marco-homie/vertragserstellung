@@ -68,18 +68,20 @@ function buildContractHTML(d) {
     <p>Dem Auftraggeber wird ein Sonderkündigungsrecht von ${d.sonderkuendigungsrecht} Monaten ab Vertragsabschluss eingeräumt. Innerhalb dieses Zeitraums kann der Auftraggeber den Vertrag jederzeit in Textform kündigen, ohne dass weitere Kosten entstehen. Die Grundlaufzeit von ${d.vertragslaufzeit} Monaten beginnt erst nach Ablauf des Sonderkündigungsrechts.</p>`
 
   const sig2 = d.hatZweitenUnterzeichner ? `
-<div style="margin-top:32px;display:flex;gap:0">
-  <div style="width:50%;padding-right:40px">
+<table style="width:100%;margin-top:32px;border-collapse:collapse">
+<tr>
+  <td style="width:50%;border:none;padding:0;padding-right:40px;vertical-align:top">
     <div style="border-bottom:1px solid #333;width:220px;margin-bottom:7px">&nbsp;</div>
-    <div style="font-size:10pt">${d.firmenname}</div>
+    <div style="font-size:10pt"><strong>${d.firmenname}</strong></div>
     <div style="font-size:10pt;color:#555">${d.unterzeichner2Name} · ${d.unterzeichner2Position}</div>
-  </div>
-  <div style="width:50%">
+  </td>
+  <td style="width:50%;border:none;padding:0;vertical-align:top">
     <div style="border-bottom:1px solid #333;width:220px;margin-bottom:7px">&nbsp;</div>
-    <div style="font-size:10pt">baoo Technologies GmbH</div>
+    <div style="font-size:10pt"><strong>baoo Technologies GmbH</strong></div>
     <div style="font-size:10pt;color:#555">&nbsp;</div>
-  </div>
-</div>` : ''
+  </td>
+</tr>
+</table>` : ''
 
   return `<!DOCTYPE html>
 <html lang="de">
@@ -217,18 +219,20 @@ ${d.sonstiges ? `
 
 <p style="margin-top:48px;font-size:10pt;color:#555">Köln, den ${d.vertragsdatum}</p>
 
-<div style="margin-top:32px;display:flex;gap:0">
-  <div style="width:50%;padding-right:40px">
+<table style="width:100%;margin-top:32px;border-collapse:collapse">
+<tr>
+  <td style="width:50%;border:none;padding:0;padding-right:40px;vertical-align:top">
     <div style="border-bottom:1px solid #333;width:220px;margin-bottom:7px">&nbsp;</div>
-    <div style="font-size:10pt">${d.firmenname}</div>
+    <div style="font-size:10pt"><strong>${d.firmenname}</strong></div>
     <div style="font-size:10pt;color:#555">${d.unterzeichner1Name} · ${d.unterzeichner1Position}</div>
-  </div>
-  <div style="width:50%">
+  </td>
+  <td style="width:50%;border:none;padding:0;vertical-align:top">
     <div style="border-bottom:1px solid #333;width:220px;margin-bottom:7px">&nbsp;</div>
-    <div style="font-size:10pt">baoo Technologies GmbH</div>
+    <div style="font-size:10pt"><strong>baoo Technologies GmbH</strong></div>
     <div style="font-size:10pt;color:#555">${d.gfName} · ${d.gfPosition}</div>
-  </div>
-</div>
+  </td>
+</tr>
+</table>
 
 ${sig2}
 <p style="margin-top:28px;font-size:9pt;color:#888">baoo Technologies GmbH &nbsp;|&nbsp; c/o Projekton, Salierring 32, 50677 Köln</p>
@@ -418,42 +422,24 @@ export default function App() {
 
   const goPreview = () => { setContractHTML(buildContractHTML(f)); setStep(5) }
 
-  const downloadHTML = () => {
-    const blob = new Blob([contractHTML], { type: 'text/html;charset=utf-8' })
-    const url  = URL.createObjectURL(blob)
-    const a    = document.createElement('a')
-    a.href = url
-    a.download = `Vertrag_${f.firmenname.replace(/\s+/g, '_') || 'Kunde'}_${new Date().toISOString().slice(0,10)}.html`
-    document.body.appendChild(a); a.click()
-    document.body.removeChild(a); URL.revokeObjectURL(url)
+  const openPrint = () => {
+    const win = window.open('', '_blank')
+    win.document.write(contractHTML)
+    win.document.close()
+    setTimeout(() => { win.focus(); win.print() }, 400)
   }
 
   const downloadWord = () => {
-    const wordDoc = `<html xmlns:o='urn:schemas-microsoft-com:office:office'
-      xmlns:w='urn:schemas-microsoft-com:office:word'
-      xmlns='http://www.w3.org/TR/REC-html40'>
-      <head>
-        <meta charset='utf-8'/>
-        <title>Vertrag – ${f.firmenname}</title>
-        <style>
-          body { font-family: Arial, sans-serif; font-size: 11pt; line-height: 1.65; color: #111; margin: 2cm; }
-          h1 { font-size: 15pt; text-align: center; }
-          h2 { font-size: 11.5pt; font-weight: bold; margin-top: 22px; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
-          table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 10.5pt; }
-          th { background: #1E3A5F; color: #fff; padding: 8px 10px; text-align: left; }
-          td { border: 1px solid #ccc; padding: 7px 9px; vertical-align: top; }
-          p { margin: 5px 0; }
-        </style>
-      </head>
-      <body>${contractHTML.replace(/^[\s\S]*?<body[^>]*>/i, '').replace(/<\/body>[\s\S]*$/i, '')}</body>
-    </html>`
+    const wordDoc = '<!DOCTYPE html><html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"></head><body>'
+      + contractHTML.replace(/^[\s\S]*?<body[^>]*>/i, '').replace(/<\/body>[\s\S]*$/i, '')
+      + '</body></html>'
     const blob = new Blob(['\ufeff', wordDoc], { type: 'application/msword' })
     const url  = URL.createObjectURL(blob)
     const a    = document.createElement('a')
     a.href = url
-    a.download = `Vertrag_${f.firmenname.replace(/\s+/g, '_') || 'Kunde'}_${new Date().toISOString().slice(0,10)}.doc`
+    a.download = `Vertrag_${(f.firmenname || 'Kunde').replace(/\s+/g, '_')}_${new Date().toISOString().slice(0,10)}.doc`
     document.body.appendChild(a); a.click()
-    document.body.removeChild(a); URL.revokeObjectURL(url)
+    setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url) }, 200)
   }
 
   // Open native email client with pre-filled content
@@ -853,7 +839,7 @@ baoo Sales Team`)
 
           {/* Action bar */}
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 20, alignItems: 'center' }}>
-            <Btn variant="secondary" onClick={downloadHTML}>⬇ HTML herunterladen</Btn>
+            <Btn variant="secondary" onClick={openPrint}>⬇ Als PDF speichern</Btn>
             <Btn variant="secondary" onClick={downloadWord}>⬇ Word (.doc) herunterladen</Btn>
 
             {sendState !== 'sent' ? (<>
