@@ -424,12 +424,12 @@ export default function App() {
 
   const openPrint = () => {
     try {
-      const printHTML = contractHTML.replace('</body>', '<script>setTimeout(function(){window.focus();window.print();},500);<\/script></body>')
-      const blob = new Blob([printHTML], { type: 'text/html;charset=utf-8' })
-      const url  = URL.createObjectURL(blob)
-      const win  = window.open(url, '_blank')
+      const win = window.open('', '_blank')
       if (!win) { setSendMsg('Popup-Blocker aktiv – bitte kurz deaktivieren und nochmal klicken.'); return }
-      setTimeout(() => URL.revokeObjectURL(url), 60000)
+      win.document.title = `Vertrag – ${f.firmenname}`
+      win.document.write(contractHTML)
+      win.document.close()
+      setTimeout(() => { win.focus(); win.print() }, 600)
     } catch(e) { setSendMsg('PDF-Export fehlgeschlagen: ' + e.message) }
   }
 
