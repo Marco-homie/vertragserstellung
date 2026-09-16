@@ -74,8 +74,11 @@ function buildContractHTML(d) {
     <tr>
       <td style="padding:8px;border:1px solid #ccc;font-weight:bold">3</td>
       <td style="padding:8px;border:1px solid #ccc">
-        <strong>Enterprise Customer Service Level (${d.serviceLevel})</strong><br/>
-        ${tier.features.map(([k,v]) => `– ${k}: ${v}`).join('<br/>')}<br/><br/><em>Andere Service-Pakete sind jederzeit zubuchbar (optional).</em>
+        <strong>Enterprise Customer Service Level (${d.serviceLevel})</strong>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px 16px;margin-top:6px;font-size:10pt;line-height:1.5">
+          ${tier.features.map(([k,v]) => `<div>– ${k}: ${v}</div>`).join('')}
+        </div>
+        <div style="margin-top:6px;font-size:10pt;font-style:italic"><em>Andere Service-Pakete sind jederzeit zubuchbar (optional).</em></div>
       </td>
       <td style="padding:8px;border:1px solid #ccc;text-align:center">1</td>
       <td style="padding:8px;border:1px solid #ccc;text-align:center">Monat</td>
@@ -110,18 +113,17 @@ function buildContractHTML(d) {
 <style>
   body{font-family:Arial,sans-serif;font-size:11pt;line-height:1.65;color:#111;max-width:840px;margin:0 auto;padding:48px 40px}
   h1{font-size:15pt;text-align:center;margin-bottom:4px}
-  h2{font-size:11.5pt;font-weight:bold;margin-top:22px;border-bottom:1.5px solid #ddd;padding-bottom:4px}
+  h2{font-size:11.5pt;font-weight:bold;margin-top:22px;border-bottom:1.5px solid #ddd;padding-bottom:4px;page-break-after:avoid;break-after:avoid}p{margin:5px 0;orphans:4;widows:4}h2+p{page-break-before:avoid}
   table{width:100%;border-collapse:collapse;margin:10px 0;font-size:10.5pt}
   th{background:#1E3A5F;color:#fff;padding:8px 10px;text-align:left}
   td{border:1px solid #ccc;padding:7px 9px;vertical-align:top}
   p{margin:5px 0}
   .c{text-align:center}
-  .page-logo{position:fixed;top:18px;right:32px;width:90px;filter:grayscale(100%)}
-  @media print{@page{margin:2cm 2cm 2cm 2cm}.page-logo{position:fixed;top:18px;right:32px;width:90px;filter:grayscale(100%)}}
+  @media print{@page{margin:2cm 2.5cm 2cm 2cm}.logo-header{position:fixed;top:12px;right:24px;width:80px;filter:grayscale(100%)}}
 </style>
 </head>
 <body>
-<img src="${d.logoSrc}" class="page-logo" alt="homie AI" />
+<div style="text-align:right;margin-bottom:8px"><img src="${d.logoSrc}" class="logo-header" style="width:80px;filter:grayscale(100%)" alt="homie AI" /></div>
 <h1>Software-Nutzungsvertrag: KI-Agent "homie AI"</h1>
 <p class="c" style="color:#555;font-size:10pt">Softwareanwendung für: ${d.firmenname}</p>
 <p>von</p>
@@ -133,7 +135,7 @@ function buildContractHTML(d) {
 <h2>Präambel</h2>
 <p>Der Auftragnehmer hat mit <strong>homie AI</strong> eine KI-gestützte Beratungssoftware entwickelt (nachfolgend auch "KI-Agent" oder "Software" genannt), die Unternehmen aller Branchen dabei unterstützt, ihren Kunden, Partnern und Interessenten einen intelligenten, automatisierten Kontakt rund um die Uhr zu bieten.</p>
 <p>homie AI führt eigenständige Beratungs- und Informationsgespräche, gibt Empfehlungen und beantwortet Anfragen zu Produkten, Leistungen, Services und weiteren Themen des Auftraggebers – kontextsensitiv, mehrsprachig und jederzeit verfügbar. Die Tiefe der Beratung richtet sich dabei nach Thema und Anfrage.</p>
-<p>Der Auftraggeber ist die ${d.firmenname}</p>
+<p>Der Auftraggeber ist die ${d.firmenname}.</p>
 
 <h2>§1 Vertragsgegenstand</h2>
 <p>Gegenstand des Vertrages ist die entgeltliche monatliche Nutzung der KI-Live-Beratungssoftware ("KI-Agent") des Auftragnehmers in dem Leistungspaket ENTERPRISE gemäß der Leistungsbeschreibung in Abschnitt 4 dieses Vertrages und in der jeweils aktuellen und bereitgestellten Version (nachfolgend: "Software") während der Laufzeit dieses Vertrages.</p>
@@ -155,14 +157,15 @@ ${(parseFloat(d.setupPreis.replace(',','.')) || 0) > 0 ? '<p>Der Auftragnehmer w
 <tr><th style="width:40px">Pos.</th><th>Leistung</th><th style="width:50px">Anz.</th><th style="width:80px">Einheit</th><th style="width:120px">Preis (netto)</th></tr>
 <tr>
   <td><strong>1</strong></td>
-  <td><strong>Individuelles technisches Set-Up des KI-Agenten</strong><br/>
-  – Relevante Daten und Inhalte des Auftraggebers anbinden und in einem individuellen Daten-Cluster anlegen<br/>
-  – Einrichtung eines laufenden Live-Daten-Abgleichs<br/>
-  – KI initial auf Produkte, Leistungen und Inhalte des Auftraggebers trainieren und fine-tunen<br/>
-  – Dialog und Kommunikation anpassen<br/>
-  – Interface auf CI des Auftraggebers anpassen<br/>
-  – Technische Integrationslösung bereitstellen (z. B. JavaScript Snippet, iFrame oder individuelle Schnittstelle)<br/>
-  – Dashboard für Administration bereitstellen</td>
+  <td><strong>Individuelles technisches Set-Up des KI-Agenten</strong>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px 16px;margin-top:6px;font-size:10pt;line-height:1.5">
+    <div>– Daten &amp; Inhalte anbinden, Daten-Cluster anlegen</div>
+    <div>– Interface auf CI des Auftraggebers anpassen</div>
+    <div>– Live-Daten-Abgleich einrichten</div>
+    <div>– Technische Integration bereitstellen (JS, iFrame o. ä.)</div>
+    <div>– Dialog und Kommunikation anpassen</div>
+    <div>– Dashboard für Administration bereitstellen</div>
+  </div></td>
   <td style="text-align:center">1</td><td style="text-align:center">Pauschal</td><td>${d.setupPreisStaffelung ? `<strong>${d.setupPreis}&nbsp;€</strong><div style="font-size:9.5pt;color:#666;margin-top:3px">Setup-Preis gültig bis ${d.setupGueltigBis}</div><strong>${d.setupRegelpreis}&nbsp;€</strong><div style="font-size:9.5pt;color:#666;margin-top:3px">Setup-Preis ab ${_setupAbDatum}</div>` : `<strong>${d.setupPreis}&nbsp;€</strong>`}</td>
 </tr>
 </table>
@@ -173,20 +176,25 @@ ${(parseFloat(d.setupPreis.replace(',','.')) || 0) > 0 ? '<p>Der Auftragnehmer w
 <tr><th style="width:40px">Pos.</th><th>Leistung</th><th style="width:50px">Anz.</th><th style="width:80px">Einheit</th><th style="width:120px">Preis (netto)</th></tr>
 <tr>
   <td><strong>2</strong></td>
-  <td><strong>Leistungspaket ENTERPRISE</strong><br/>
-  ${d.kiAssistenten} KI-Agenten<br/>
-  ${d.produktseiten} Produktdetailseiten mit KI-Fragen<br/><br/>
-  <strong>Data Dashboard</strong><br/>
-  – Live-Einsicht in alle Kunden-Interaktionen und Nutzerbewertungen<br/>
-  – Auswertung der Kunden-Interaktionen<br/>
-  – Individuelle Einstellungen des KI-Agenten<br/>
-  – bis zu 10 Zugänge<br/><br/>
-  <strong>Inklusivleistungen</strong><br/>
-  – White-Label KI-Agenten-Lösung, Individuelle Tonalität<br/>
-  – 24/7 Live-Daten Abgleich &amp; Verfügbarkeit<br/>
-  – Voice- und Texteingabe in &gt;50 Sprachen<br/><br/>
-  <strong>Inkl. Volumen:</strong> ${d.nachrichtenProMonat} Nachrichten/Monat<br/>
-  Jede weitere Nachricht: ${d.preisProNachricht}&nbsp;€</td>
+  <td><strong>Leistungspaket ENTERPRISE</strong>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;margin-top:8px;font-size:10pt;line-height:1.5">
+    <div>
+      <strong>Umfang</strong><br/>
+      ${d.kiAssistenten} KI-Agenten<br/>
+      ${d.produktseiten} Produktdetailseiten mit KI-Fragen<br/>
+      Inkl. ${d.nachrichtenProMonat} Nachrichten/Monat<br/>
+      Je weitere Nachricht: ${d.preisProNachricht}&nbsp;€
+    </div>
+    <div>
+      <strong>Data Dashboard</strong><br/>
+      – Live-Einsicht Kunden-Interaktionen &amp; Nutzerbewertungen<br/>
+      – Auswertung der Kunden-Interaktionen<br/>
+      – Individuelle Einstellungen | bis zu 10 Zugänge
+    </div>
+  </div>
+  <div style="margin-top:8px;font-size:10pt;line-height:1.5">
+    <strong>Inklusivleistungen:</strong> White-Label KI-Agenten-Lösung · Individuelle Tonalität · 24/7 Live-Daten Abgleich &amp; Verfügbarkeit · Voice- &amp; Texteingabe in &gt;50 Sprachen
+  </div></td>
   <td style="text-align:center">1</td><td style="text-align:center">Monat</td><td><strong>${d.monatlichPreis}&nbsp;€</strong><div style="font-size:9.5pt;color:#666;margin-top:3px">Sofortpreis gültig bis ${d.sofortpreisGueltigBis}</div><strong>${_regelpreisStr}&nbsp;€</strong><div style="font-size:9.5pt;color:#666;margin-top:3px">Regelpreis ab ${_abDatum}</div></td>
 </tr>
 ${serviceRow}
@@ -617,7 +625,7 @@ baoo Sales Team`)
 
           <Card title="1. Unterzeichner (Auftraggeber)">
             <Row>
-              <div style={{ flex: 1 }}><Field label="Name" required><Inp value={f.unterzeichner1Name} onChange={v => set('unterzeichner1Name', v)} placeholder="Max Mustermann" /></Field></div>
+              <div style={{ flex: 1 }}><Field label="Vor- und Nachname" required><Inp value={f.unterzeichner1Name} onChange={v => set('unterzeichner1Name', v)} placeholder="z.B. Florian Bein" /></Field></div>
               <div style={{ flex: 1 }}><Field label="Position / Funktion" required><Inp value={f.unterzeichner1Position} onChange={v => set('unterzeichner1Position', v)} placeholder="Geschäftsführer" /></Field></div>
             </Row>
           </Card>
