@@ -851,7 +851,7 @@ baoo Sales Team`)
           </Card>
 
           <Card title="Vertragsdatum">
-            <Field label="Datum des Vertragsabschlusses" required>
+            <Field label="Heutiges Datum" required>
               <Inp value={f.vertragsdatum} onChange={v => set('vertragsdatum', v)} placeholder="29.07.2026" />
             </Field>
           </Card>
