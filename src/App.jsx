@@ -152,7 +152,7 @@ ${(parseFloat(d.setupPreis.replace(',','.')) || 0) > 0 ? '<p>Der Auftragnehmer w
 
 <div style="margin-bottom:16px;font-size:11pt">
   <p style="margin:0 0 4px"><strong>Pos. 1 &nbsp;·&nbsp; Individuelles technisches Set-Up des KI-Agenten</strong> <span style="color:#666">— einmalig, pauschal</span></p>
-  <p style="margin:0 0 8px;font-weight:bold">${d.setupPreisStaffelung ? `Setup-Preis bis ${d.setupGueltigBis}: ${d.setupPreis}&nbsp;€<br/>Setup-Preis ab ${_setupAbDatum}: ${d.setupRegelpreis}&nbsp;€` : `${d.setupPreis}&nbsp;€`}</p>
+  <p style="margin:0 0 8px;font-weight:bold">${d.setupPreisStaffelung ? `Setup-Preis bei Unterschrift bis ${d.setupGueltigBis}: ${d.setupPreis}&nbsp;€<br/>Setup-Preis ab ${_setupAbDatum}: ${d.setupRegelpreis}&nbsp;€` : `${d.setupPreis}&nbsp;€`}</p>
   <div style="font-size:11pt;color:#333;line-height:1.7">
     – Daten &amp; Inhalte des Auftraggebers anbinden und in einem individuellen Daten-Cluster anlegen<br/>
     – Laufenden Live-Daten-Abgleich einrichten<br/>
@@ -165,7 +165,7 @@ ${(parseFloat(d.setupPreis.replace(',','.')) || 0) > 0 ? '<p>Der Auftragnehmer w
 
 <div style="margin-bottom:16px;font-size:11pt">
   <p style="margin:0 0 4px"><strong>Pos. 2 &nbsp;·&nbsp; Leistungspaket ENTERPRISE</strong> <span style="color:#666">— monatlich</span></p>
-  <p style="margin:0 0 8px;font-weight:bold">Sofortpreis bis ${d.sofortpreisGueltigBis}: ${d.monatlichPreis}&nbsp;€ / Monat<br/>Regelpreis ab ${_abDatum}: ${_regelpreisStr}&nbsp;€ / Monat</p>
+  <p style="margin:0 0 8px;font-weight:bold">Sofortpreis bei Unterschrift bis ${d.sofortpreisGueltigBis}: ${d.monatlichPreis}&nbsp;€ / Monat<br/>Regelpreis ab ${_abDatum}: ${_regelpreisStr}&nbsp;€ / Monat</p>
   <div style="font-size:11pt;color:#333;line-height:1.7">
     <strong>Umfang:</strong> ${d.kiAssistenten} KI-Agenten · ${d.produktseiten} Produktdetailseiten mit KI-Fragen · inkl. ${d.nachrichtenProMonat} Nachrichten/Monat · je weitere Nachricht ${d.preisProNachricht}&nbsp;€<br/>
     <strong>Data Dashboard:</strong> Live-Einsicht Kunden-Interaktionen &amp; Nutzerbewertungen · Auswertung der Kunden-Interaktionen · Individuelle Einstellungen · bis zu 10 Zugänge<br/>
