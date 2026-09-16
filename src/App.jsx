@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react'
 
+// ─── LOGO (base64) ────────────────────────────────────────────────────────────
+const LOGO_SRC = 'data:image/png;base64,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'
+
 // ─── TIER DATA ───────────────────────────────────────────────────────────────────
 const TIER_DATA = {
   'Standard': {
@@ -7,11 +10,11 @@ const TIER_DATA = {
     preisLabel: 'Inklusive',
     tagline: '',
     features: [
-      ['Verfügbarkeit', 'Mo–Fr 10:00–16:00 Uhr'],
+      ['Verfügbarkeit', 'Mo–Fr 08:00–18:00 Uhr'],
       ['Reaktionszeit', 'Nächster Werktag'],
-      ['Support-Kanäle', 'E-Mail'],
+      ['Support-Kanäle', 'E-Mail, Telefon'],
       ['Persönlicher Sparrings-Partner', 'Nein'],
-      ['Performance-Meetings', 'Auf Anfrage'],
+      ['Performance-Meetings', 'Auf Anfrage / bei Verfügbarkeit'],
       ['Service-Umfang', 'Fehlerbehebung'],
       ['Priorisierung bei Updates', 'Nein'],
     ],
@@ -21,8 +24,8 @@ const TIER_DATA = {
     preisLabel: '290 € / Monat',
     tagline: '',
     features: [
-      ['Verfügbarkeit', 'Mo–Fr 08:00–18:00 Uhr'],
-      ['Reaktionszeit', 'Mo–Fr 8h'],
+      ['Verfügbarkeit', 'Mo–Fr 08:00–20:00 Uhr'],
+      ['Reaktionszeit', 'Mo–Fr 4h'],
       ['Support-Kanäle', 'E-Mail, Telefon'],
       ['Persönlicher Sparrings-Partner', 'Ja'],
       ['Performance-Meetings', '1× pro Quartal, fix terminiert'],
@@ -36,7 +39,7 @@ const TIER_DATA = {
     tagline: '',
     features: [
       ['Verfügbarkeit', 'Mo–Fr 08:00–20:00 Uhr + Sa 10:00–18:00 Uhr'],
-      ['Reaktionszeit', 'Mo–Fr 4h, Sa 6h'],
+      ['Reaktionszeit', 'Mo–Fr 2h, Sa 4h'],
       ['Support-Kanäle', 'E-Mail, Telefon, Slack/Teams/WhatsApp'],
       ['Persönlicher Sparrings-Partner', 'Ja'],
       ['Performance-Meetings', '1× pro Monat, fix terminiert'],
@@ -48,6 +51,16 @@ const TIER_DATA = {
 
 // ─── CONTRACT HTML BUILDER ────────────────────────────────────────────────────
 function buildContractHTML(d) {
+  const _sofortVal = parseFloat((d.monatlichPreis||'').replace(/\./g,'').replace(',','.'))
+  const _regelpreisStr = isNaN(_sofortVal) ? '–' : String(Math.round(_sofortVal * 1.1))
+  const _abDatum = (() => {
+    const p = (d.sofortpreisGueltigBis||'').split('.')
+    if (p.length === 3) {
+      const dt = new Date(parseInt(p[2]), parseInt(p[1])-1, parseInt(p[0])+1)
+      return String(dt.getDate()).padStart(2,'0')+'.'+String(dt.getMonth()+1).padStart(2,'0')+'.'+dt.getFullYear()
+    }
+    return d.sofortpreisGueltigBis
+  })()
   const tier = TIER_DATA[d.serviceLevel] || TIER_DATA['Standard']
   const serviceRow = `
     <tr>
@@ -95,31 +108,33 @@ function buildContractHTML(d) {
   td{border:1px solid #ccc;padding:7px 9px;vertical-align:top}
   p{margin:5px 0}
   .c{text-align:center}
-  @media print{@page{margin:2cm}}
+  .page-logo{position:fixed;top:18px;right:32px;width:90px;filter:grayscale(100%)}
+  @media print{@page{margin:2cm 2cm 2cm 2cm}.page-logo{position:fixed;top:18px;right:32px;width:90px;filter:grayscale(100%)}}
 </style>
 </head>
 <body>
-<h1>Software-Nutzungsvertrag: KI-Assistenz "homie AI"</h1>
+<img src="${d.logoSrc}" class="page-logo" alt="homie AI" />
+<h1>Software-Nutzungsvertrag: KI-Agent "homie AI"</h1>
 <p class="c" style="color:#555;font-size:10pt">Softwareanwendung für: ${d.firmenname}</p>
 <p>von</p>
 <p><strong>baoo Technologies GmbH</strong><br/>c/o Projekton, Salierring 32<br/>50677 Köln<br/>– nachfolgend <strong>"Auftragnehmer"</strong> genannt –</p>
 <p>an</p>
-<p><strong>${d.firmenname}</strong><br/>${d.strasse} ${d.hausnummer}<br/>${d.plz} ${d.stadt}<br/>– nachfolgend <strong>"Auftraggeber"</strong> genannt –</p>
+<p><strong>${d.firmenname}</strong><br/>${d.strasse} ${d.hausnummer}${d.adresszusatz ? '<br/>' + d.adresszusatz : ''}<br/>${d.plz} ${d.stadt}<br/>${d.land}<br/>– nachfolgend <strong>"Auftraggeber"</strong> genannt –</p>
 <p>Köln, den ${d.vertragsdatum}</p>
 
 <h2>Präambel</h2>
-<p>Der Auftragnehmer hat mit <strong>homie AI</strong> eine KI-gestützte Beratungssoftware entwickelt (nachfolgend auch "KI-Assistenz" oder "Software" genannt), die Unternehmen aller Branchen dabei unterstützt, ihren Kunden, Partnern und Interessenten einen intelligenten, automatisierten Kontakt rund um die Uhr zu bieten.</p>
+<p>Der Auftragnehmer hat mit <strong>homie AI</strong> eine KI-gestützte Beratungssoftware entwickelt (nachfolgend auch "KI-Agent" oder "Software" genannt), die Unternehmen aller Branchen dabei unterstützt, ihren Kunden, Partnern und Interessenten einen intelligenten, automatisierten Kontakt rund um die Uhr zu bieten.</p>
 <p>homie AI führt eigenständige Beratungs- und Informationsgespräche, gibt Empfehlungen und beantwortet Anfragen zu Produkten, Leistungen, Services und weiteren Themen des Auftraggebers – kontextsensitiv, mehrsprachig und jederzeit verfügbar. Die Tiefe der Beratung richtet sich dabei nach Thema und Anfrage.</p>
 <p>Der Auftraggeber ist die ${d.firmenname}</p>
 
 <h2>§1 Vertragsgegenstand</h2>
-<p>Gegenstand des Vertrages ist die entgeltliche monatliche Nutzung der KI-Live-Beratungssoftware ("KI-Assistenz") des Auftragnehmers in dem Leistungspaket ENTERPRISE gemäß der Leistungsbeschreibung in Abschnitt 4 dieses Vertrages und in der jeweils aktuellen und bereitgestellten Version (nachfolgend: "Software") während der Laufzeit dieses Vertrages.</p>
-<p>Die technische Integration der Software beim Auftraggeber erfolgt je nach Einsatzszenario über ein Code-Snippet (iFrame oder JavaScript), eine API-Anbindung oder eine andere individuell vereinbarte Schnittstelle. Des Weiteren erhält der Auftraggeber Zugriff per Login auf eine Plattform zur Verwaltung der KI-Assistenz.</p>
+<p>Gegenstand des Vertrages ist die entgeltliche monatliche Nutzung der KI-Live-Beratungssoftware ("KI-Agent") des Auftragnehmers in dem Leistungspaket ENTERPRISE gemäß der Leistungsbeschreibung in Abschnitt 4 dieses Vertrages und in der jeweils aktuellen und bereitgestellten Version (nachfolgend: "Software") während der Laufzeit dieses Vertrages.</p>
+<p>Die technische Integration der Software beim Auftraggeber erfolgt je nach Einsatzszenario über ein Code-Snippet (iFrame oder JavaScript), eine API-Anbindung oder eine andere individuell vereinbarte Schnittstelle. Des Weiteren erhält der Auftraggeber Zugriff per Login auf eine Plattform zur Verwaltung des KI-Agenten.</p>
 
 <h2>§2 Obliegenheiten des Kunden</h2>
-<p>Der Auftraggeber stellt einen zentralen Ansprechpartner für das technische Setup des KI-Assistenzs zur Verfügung, da die Einrichtung individuell für den Auftraggeber erfolgt.</p>
-<p>Der Auftraggeber stellt dem Auftragnehmer relevante Daten und Informationen bereit, auf deren Grundlage die KI-Assistenz trainiert und laufend betrieben wird. Dazu gehören insbesondere Produkt-, Leistungs- und Servicedaten des Auftraggebers. Die Bereitstellung kann beispielsweise per API oder Datenfeed erfolgen.</p>
-<p>Die technische Integration der KI-Assistenz durch den Auftraggeber erfolgt gemäß der gemeinsam vereinbarten Implementierungsmethode.</p>
+<p>Der Auftraggeber stellt einen zentralen Ansprechpartner für das technische Setup des KI-Agenten zur Verfügung, da die Einrichtung individuell für den Auftraggeber erfolgt.</p>
+<p>Der Auftraggeber stellt dem Auftragnehmer relevante Daten und Informationen bereit, auf deren Grundlage den KI-Agenten trainiert und laufend betrieben wird. Dazu gehören insbesondere Produkt-, Leistungs- und Servicedaten des Auftraggebers. Die Bereitstellung kann beispielsweise per API oder Datenfeed erfolgen.</p>
+<p>Die technische Integration des KI-Agenten durch den Auftraggeber erfolgt gemäß der gemeinsam vereinbarten Implementierungsmethode.</p>
 
 <h2>§3 Softwareüberlassung</h2>
 <p>Der Auftragnehmer räumt dem Auftraggeber das nicht-ausschließliche, nicht-übertragbare und nicht-unterlizenzierbare Nutzungsrecht an der Software für die Laufzeit dieses Vertrages ein.</p>
@@ -132,12 +147,12 @@ ${(parseFloat(d.setupPreis.replace(',','.')) || 0) > 0 ? '<p>Der Auftragnehmer w
 <tr><th style="width:40px">Pos.</th><th>Leistung</th><th style="width:50px">Anz.</th><th style="width:80px">Einheit</th><th style="width:120px">Preis (netto)</th></tr>
 <tr>
   <td><strong>1</strong></td>
-  <td><strong>Individuelles technisches Set-Up des KI-Assistenzs</strong><br/>
+  <td><strong>Individuelles technisches Set-Up des KI-Agenten</strong><br/>
   – Relevante Daten und Inhalte des Auftraggebers anbinden und in einem individuellen Daten-Cluster anlegen<br/>
   – Einrichtung eines laufenden Live-Daten-Abgleichs<br/>
   – KI initial auf Produkte, Leistungen und Inhalte des Auftraggebers trainieren und fine-tunen<br/>
   – Dialog und Kommunikation anpassen<br/>
-  – Chat-Interface auf CI des Auftraggebers anpassen<br/>
+  – Interface auf CI des Auftraggebers anpassen<br/>
   – Technische Integrationslösung bereitstellen (z. B. JavaScript Snippet, iFrame oder individuelle Schnittstelle)<br/>
   – Dashboard für Administration bereitstellen</td>
   <td style="text-align:center">1</td><td style="text-align:center">Pauschal</td><td><strong>${d.setupPreis}&nbsp;€</strong></td>
@@ -151,16 +166,15 @@ ${(parseFloat(d.setupPreis.replace(',','.')) || 0) > 0 ? '<p>Der Auftragnehmer w
 <tr>
   <td><strong>2</strong></td>
   <td><strong>Leistungspaket ENTERPRISE</strong><br/>
-  ${d.kiAssistenten} KI-Assistenzen<br/>
-  ${d.landingpages} Landingpages im Wissensspeicher<br/>
-  ${d.produktseiten} Produktseiten mit Produktfragen<br/><br/>
+  ${d.kiAssistenten} KI-Agenten<br/>
+  ${d.produktseiten} Produktdetailseiten mit KI-Fragen<br/><br/>
   <strong>Data Dashboard</strong><br/>
-  – Live-Einsicht in alle Chats und Nutzerbewertungen<br/>
-  – Auswertung der Chat-Interaktionen<br/>
-  – Individuelle Einstellungen des KI-Assistenzs<br/>
+  – Live-Einsicht in alle Kunden-Interaktionen und Nutzerbewertungen<br/>
+  – Auswertung der Kunden-Interaktionen<br/>
+  – Individuelle Einstellungen des KI-Agenten<br/>
   – bis zu 10 Zugänge<br/><br/>
   <strong>Inklusivleistungen</strong><br/>
-  – White-Label ChatBot-Lösung, Individuelle Chat-Tonalität<br/>
+  – White-Label KI-Agenten-Lösung, Individuelle Tonalität<br/>
   – 24/7 Live-Daten Abgleich &amp; Verfügbarkeit<br/>
   – Voice- und Texteingabe in &gt;50 Sprachen<br/><br/>
   <strong>Inkl. Volumen:</strong> ${d.nachrichtenProMonat} Nachrichten/Monat<br/>
@@ -193,15 +207,15 @@ ${sonderkuendigungsText}
 <p>Bei Unterschreitung ist der Auftraggeber berechtigt, eine verhältnismäßige Vergütungsminderung zu verlangen.</p>
 
 <h2>§9 Datenschutz</h2>
-<p>Der Auftragnehmer verarbeitet im Rahmen dieses Vertrags keine personenbezogenen Daten. Sollte er dennoch welche erhalten, informiert er den Auftraggeber unverzüglich.</p>
-<p>Alle Daten sind auf deutschen Servern in einem separaten Datenbankcluster mit Multi-Tenancy gesichert.</p>
-<p>Eine Beschreibung der TOMs und die EU-AI-Act-Konformität sind im Anhang aufgeführt.</p>
+<p>Die Datenverarbeitung wird in dem angehängten AVV, nebst den technischen und organisatorischen Maßnahmen (TOMs), dargestellt.</p>
+<p>Der Auftragnehmer sichert alle Daten des Auftraggebers (z.B. Produkt- oder Bestandsdaten) in einem separaten Datenbank Cluster mit Multi-Tenancy (Mandantentrennung). Die Daten sind auf Servern in Deutschland gesichert.</p>
+<p>Der Auftragnehmer stellt dem Auftraggeber auf Wunsch eine Datenschutzerklärung, nebst Nutzungsbedingungen für die Nutzung des KI-Agenten, zur Verfügung.</p>
 
 <h2>§10 Haftungsausschluss</h2>
 <p>Haftung des Auftragnehmers tritt nur bei Verletzung von Kardinalpflichten, grober Fahrlässigkeit oder Vorsatz ein. Haftung für Körper-, Lebens- und Gesundheitsschäden bleibt unberührt.</p>
 
 <h2>§11 Geheimhaltung und Vertraulichkeit</h2>
-<p>Kundendaten werden nicht mit anderen Vertragspartnern ausgetauscht (Mandantentrennung). Nicht-öffentliche Daten werden nur für den laufenden Chat-Betrieb genutzt.</p>
+<p>Kundendaten werden nicht mit anderen Vertragspartnern ausgetauscht (Mandantentrennung). Nicht-öffentliche Daten werden nur für den laufenden Betrieb des KI-Agenten genutzt.</p>
 
 ${d.praxisberichtZustimmung ? `
 <h2>§12 Referenzkundenstatus und Praxisbericht</h2>
@@ -405,10 +419,10 @@ export default function App() {
   const [sendMsg, setSendMsg]     = useState('')
 
   const [f, setF] = useState({
-    firmenname: '', strasse: '', hausnummer: '', plz: '', stadt: '',
+    firmenname: '', strasse: '', hausnummer: '', plz: '', stadt: '', adresszusatz: '', land: 'Deutschland',
     unterzeichner1Name: '', unterzeichner1Position: '',
     hatZweitenUnterzeichner: false, unterzeichner2Name: '', unterzeichner2Position: '',
-    kiAssistenten: '', landingpages: '', produktseiten: '', nachrichtenProMonat: '', preisProNachricht: '0,05',
+    kiAssistenten: '', produktseiten: '', nachrichtenProMonat: '', preisProNachricht: '',
     setupPreis: '', monatlichPreis: '',
     serviceLevel: 'Standard',
     vertragslaufzeit: '12', testphase: 'keine', sonderkuendigungsrecht: '2',
@@ -420,7 +434,7 @@ export default function App() {
   })
   const set = (k, v) => setF(p => ({ ...p, [k]: v }))
 
-  const goPreview = () => { setContractHTML(buildContractHTML(f)); setStep(5) }
+  const goPreview = () => { setContractHTML(buildContractHTML({...f, logoSrc: LOGO_SRC})); setStep(5) }
 
   const openPrint = () => {
     try {
@@ -468,8 +482,7 @@ PREISE (netto, zzgl. 19% MwSt.)
 
 LEISTUNGSUMFANG
   KI-Assistenzen:           ${f.kiAssistenten}
-  Landingpages:             ${f.landingpages}
-  Produktseiten:            ${f.produktseiten}
+  Produktdetailseiten:      ${f.produktseiten}
   Nachrichten/Monat:        ${f.nachrichtenProMonat}
   Laufzeit:                 ${f.vertragslaufzeit} Monate
   Testphase:                ${f.testphase}
@@ -518,9 +531,9 @@ baoo Sales Team`)
 
   // Guards
   const step1ok = f.firmenname && f.strasse && f.hausnummer && f.plz && f.stadt && f.unterzeichner1Name && f.unterzeichner1Position
-  const step2ok = f.kiAssistenten && f.landingpages && f.produktseiten && f.nachrichtenProMonat
-  const step3ok = f.setupPreis && f.monatlichPreis
-  const step4ok = f.vertragsdatum && f.gfEmail && f.senderEmail
+  const step2ok = f.kiAssistenten && f.produktseiten && f.nachrichtenProMonat && f.preisProNachricht
+  const step3ok = f.setupPreis && f.monatlichPreis && /^\d{2}\.\d{2}\.\d{4}$/.test(f.sofortpreisGueltigBis)
+  const step4ok = f.vertragsdatum
 
   const hasApiKey = !!localStorage.getItem('baoo_api_key')
 
@@ -586,10 +599,12 @@ baoo Sales Team`)
               <div style={{ flex: 2 }}><Field label="Straße" required><Inp value={f.strasse} onChange={v => set('strasse', v)} placeholder="Musterstraße" /></Field></div>
               <div style={{ flex: 0.7 }}><Field label="Nr." required><Inp value={f.hausnummer} onChange={v => set('hausnummer', v)} placeholder="12a" /></Field></div>
             </Row>
+            <Field label="Adresszusatz"><Inp value={f.adresszusatz} onChange={v => set('adresszusatz', v)} placeholder="c/o, Etage, Gebäude …" /></Field>
             <Row>
               <div style={{ flex: 0.7 }}><Field label="PLZ" required><Inp value={f.plz} onChange={v => set('plz', v)} placeholder="50667" /></Field></div>
               <div style={{ flex: 2 }}><Field label="Stadt" required><Inp value={f.stadt} onChange={v => set('stadt', v)} placeholder="Köln" /></Field></div>
             </Row>
+            <Field label="Land" required><Inp value={f.land} onChange={v => set('land', v)} placeholder="Deutschland" /></Field>
           </Card>
 
           <Card title="1. Unterzeichner (Auftraggeber)">
@@ -620,33 +635,21 @@ baoo Sales Team`)
 
           <Card title="KI-Assistenzen & Inhalte">
             <Row>
-              <div style={{ flex: 1 }}><Field label="Anzahl KI-Assistenzen" required><Inp value={f.kiAssistenten} onChange={v => set('kiAssistenten', v)} placeholder="z. B. 3" /></Field></div>
-              <div style={{ flex: 1 }}><Field label="Landingpages im Wissensspeicher" required><Inp value={f.landingpages} onChange={v => set('landingpages', v)} placeholder="z. B. 50" /></Field></div>
+              <div style={{ flex: 1 }}><Field label="Anzahl KI-Assistenzen" required><Inp value={f.kiAssistenten} onChange={v => set('kiAssistenten', v)} placeholder="" /></Field></div>
+              <div style={{ flex: 1 }}><Field label="Produktdetailseiten mit KI-Fragen" required><Inp value={f.produktseiten} onChange={v => set('produktseiten', v)} placeholder="" /></Field></div>
             </Row>
             <Row>
-              <div style={{ flex: 1 }}><Field label="Produktseiten mit Produktfragen" required><Inp value={f.produktseiten} onChange={v => set('produktseiten', v)} placeholder="z. B. 500" /></Field></div>
-              <div style={{ flex: 1 }}><Field label="Inklusiv-Nachrichten / Monat" required><Inp value={f.nachrichtenProMonat} onChange={v => set('nachrichtenProMonat', v)} placeholder="z. B. 10.000" /></Field></div>
-            </Row>
-            <Row>
+              <div style={{ flex: 1 }}><Field label="Inklusiv-Nachrichten / Monat" required><Inp value={f.nachrichtenProMonat} onChange={v => set('nachrichtenProMonat', v)} placeholder="" /></Field></div>
               <div style={{ flex: 1 }}>
-                <Field label="Preis je weiterer Nachricht (netto)" required hint="Vorausgefüllt mit 0,05 € – bei Bedarf anpassen">
+                <Field label="Preis je weiterer Nachricht (netto)" required>
                   <div style={{ position: 'relative' }}>
-                    <Inp value={f.preisProNachricht} onChange={v => set('preisProNachricht', v)} placeholder="0,05" />
+                    <Inp value={f.preisProNachricht} onChange={v => set('preisProNachricht', v)} placeholder="" />
                     <span style={{ position: 'absolute', right: 13, top: '50%', transform: 'translateY(-50%)', color: '#94A3B8', pointerEvents: 'none' }}>€</span>
                   </div>
                 </Field>
               </div>
-              <div style={{ flex: 1 }} />
             </Row>
           </Card>
-
-          <div style={{ background: '#EFF6FF', borderRadius: 10, padding: '14px 18px',
-            border: '1px solid #BFDBFE', marginBottom: 18 }}>
-            <p style={{ fontSize: 11, fontWeight: 700, color: '#1D4ED8', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Immer inklusive im Enterprise-Paket</p>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3px 0', fontSize: 12.5, color: '#3B82F6' }}>
-              {['White-Label ChatBot-Lösung','Individuelle Chat-Tonalität','24/7 Live-Daten Abgleich','24/7 Verfügbarkeit','Voice- & Texteingabe >50 Sprachen','Data Dashboard (bis 10 Zugänge)'].map(i => <p key={i}>✓ {i}</p>)}
-            </div>
-          </div>
 
           <div style={{
             borderLeft: '3px solid #D97706', background: '#FFFBEB',
@@ -660,6 +663,14 @@ baoo Sales Team`)
             </div>
           </div>
 
+          <div style={{ background: '#EFF6FF', borderRadius: 10, padding: '14px 18px',
+            border: '1px solid #BFDBFE', marginBottom: 18 }}>
+            <p style={{ fontSize: 11, fontWeight: 700, color: '#1D4ED8', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Immer inklusive im Enterprise-Paket</p>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3px 0', fontSize: 12.5, color: '#3B82F6' }}>
+              {['White-Label ChatBot-Lösung','Individuelle Chat-Tonalität','Voice- & Texteingabe >50 Sprachen','Data Dashboard (bis 10 Zugänge)'].map(i => <p key={i}>✓ {i}</p>)}
+            </div>
+          </div>
+
           <NavRow onBack={() => setStep(1)} onNext={() => setStep(3)} nextDisabled={!step2ok} />
         </>)}
 
@@ -669,25 +680,51 @@ baoo Sales Team`)
           <p style={{ fontSize: 13.5, color: '#64748B', marginBottom: 26 }}>Alle Preise netto, zzgl. 19% MwSt.</p>
 
           <Card title="Einmalige & monatliche Vergütung">
+            <Field label="Setup-Preis (einmalig, netto)" required>
+              <div style={{ position: 'relative' }}>
+                <Inp value={f.setupPreis} onChange={v => set('setupPreis', v)} placeholder="" />
+                <span style={{ position: 'absolute', right: 13, top: '50%', transform: 'translateY(-50%)', color: '#94A3B8', pointerEvents: 'none' }}>€</span>
+              </div>
+            </Field>
             <Row>
               <div style={{ flex: 1 }}>
-                <Field label="Setup-Preis (einmalig, netto)" required>
+                <Field label="Sofortpreis / Monat (netto)" required>
                   <div style={{ position: 'relative' }}>
-                    <Inp value={f.setupPreis} onChange={v => set('setupPreis', v)} placeholder="2.500,00" />
+                    <Inp value={f.monatlichPreis} onChange={v => set('monatlichPreis', v)} placeholder="" />
                     <span style={{ position: 'absolute', right: 13, top: '50%', transform: 'translateY(-50%)', color: '#94A3B8', pointerEvents: 'none' }}>€</span>
                   </div>
                 </Field>
               </div>
               <div style={{ flex: 1 }}>
-                <Field label="Monatliche Vergütung ENTERPRISE (netto)" required>
-                  <div style={{ position: 'relative' }}>
-                    <Inp value={f.monatlichPreis} onChange={v => set('monatlichPreis', v)} placeholder="499,00" />
-                    <span style={{ position: 'absolute', right: 13, top: '50%', transform: 'translateY(-50%)', color: '#94A3B8', pointerEvents: 'none' }}>€</span>
-                  </div>
+                <Field label="Sofortpreis gültig bis" required>
+                  <Inp value={f.sofortpreisGueltigBis} onChange={v => set('sofortpreisGueltigBis', v)} placeholder="TT.MM.JJJJ" />
+                  <p style={{ fontSize: 11.5, marginTop: 4, color: f.sofortpreisGueltigBis && !/^\d{2}\.\d{2}\.\d{4}$/.test(f.sofortpreisGueltigBis) ? '#EF4444' : '#94A3B8' }}>
+                    {f.sofortpreisGueltigBis && !/^\d{2}\.\d{2}\.\d{4}$/.test(f.sofortpreisGueltigBis) ? '⚠ Bitte im Format TT.MM.JJJJ eingeben' : 'Format: TT.MM.JJJJ'}
+                  </p>
                 </Field>
               </div>
             </Row>
+            {f.monatlichPreis && (() => {
+              const _v = parseFloat(f.monatlichPreis.replace(/\./g, '').replace(',', '.'))
+              if (isNaN(_v)) return null
+              return (
+                <Field label="Regelpreis / Monat (netto) — automatisch berechnet">
+                  <div style={{ padding: '9px 13px', background: '#F8FAFC', border: '1.5px solid #E2E8F0', borderRadius: 8, fontSize: 13.5, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontWeight: 600, color: '#1E293B' }}>{String(Math.round(_v * 1.1))} €</span>
+                    <span style={{ fontSize: 12, color: '#94A3B8' }}>Sofortpreis + 10 %</span>
+                  </div>
+                </Field>
+              )
+            })()}
           </Card>
+
+          <div style={{ borderLeft: '3px solid #D97706', background: '#FFFBEB', borderRadius: '0 6px 6px 0', padding: '11px 16px', marginBottom: 18, display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+            <span style={{ fontSize: 18, lineHeight: 1 }}>⚠️</span>
+            <div>
+              <p style={{ fontSize: 13, fontWeight: 600, color: '#92400E', margin: '0 0 2px' }}>Achte auf ein realistisches Datum.</p>
+              <p style={{ fontSize: 13, color: '#B45309', margin: 0 }}>Nicht zu kurzfristig, aber auch nicht zu langfristig. Berücksichtige Informationen wie Urlaub, Budget-Termine im Unternehmen etc.</p>
+            </div>
+          </div>
 
           <Card title="Enterprise Customer Service Level" hint="Standard ist immer inklusive – Express und Priority als Upgrade buchbar">
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginTop: 4 }}>
@@ -724,11 +761,11 @@ baoo Sales Team`)
             </div>
           </Card>
 
-          {f.setupPreis && f.monatlichPreis && (
+          {f.setupPreis && f.monatlichPreis && f.sofortpreisGueltigBis && (
             <div style={{ background: '#1E2D40', borderRadius: 10, padding: '16px 22px', marginBottom: 18 }}>
               <p style={{ fontSize: 10.5, color: '#64748B', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 10 }}>Preisübersicht</p>
               <div style={{ display: 'flex', gap: 28, flexWrap: 'wrap' }}>
-                {[['Setup (einmalig)', `${f.setupPreis} €`], ['ENTERPRISE / Monat', `${f.monatlichPreis} €`], [`Service Level (${f.serviceLevel})`, `${f.serviceLevel === 'Standard' ? 'Inklusive' : `${TIER_DATA[f.serviceLevel]?.preis || '0,00'} €`}`]].map(([l,v]) => (
+                {[['Setup (einmalig)', `${f.setupPreis} €`], [`Sofortpreis / Monat (bis ${f.sofortpreisGueltigBis})`, `${f.monatlichPreis} €`], ['Regelpreis / Monat', `${String(Math.round(parseFloat(f.monatlichPreis.replace(/\./g,'').replace(',','.'))*1.1))} €`], [`Service Level (${f.serviceLevel})`, `${f.serviceLevel === 'Standard' ? 'Inklusive' : `${TIER_DATA[f.serviceLevel]?.preis || '0,00'} €`}`]].map(([l,v]) => (
                   <div key={l}>
                     <p style={{ fontSize: 11, color: '#64748B', marginBottom: 3 }}>{l}</p>
                     <p style={{ fontSize: 16, fontWeight: 700, color: '#fff' }}>{v}</p>
@@ -819,16 +856,7 @@ baoo Sales Team`)
             </div>
           </Card>
 
-          <Card title="Versand an Geschäftsführung">
-            <Field label="E-Mail Geschäftsführer (Empfänger)" required
-              hint="Der Vertrag wird per E-Mail an diese Adresse weitergeleitet">
-              <Inp value={f.gfEmail} onChange={v => set('gfEmail', v)} placeholder="gf@baoo.de" type="email" />
-            </Field>
-            <Field label="Deine E-Mail (Sales Manager)" required
-              hint="Für die interne Kommunikation">
-              <Inp value={f.senderEmail} onChange={v => set('senderEmail', v)} placeholder="sales@baoo.de" type="email" />
-            </Field>
-          </Card>
+
 
           <Card title="Sonstiges" hint="Sonstiges ist vorher mit dem GF Marketing & Sales abzustimmen">
             <textarea
@@ -856,8 +884,7 @@ baoo Sales Team`)
 
           {/* Action bar */}
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 20, alignItems: 'center' }}>
-            <Btn variant="secondary" onClick={openPrint}>⬇ Als PDF speichern</Btn>
-            <Btn variant="secondary" onClick={downloadGoogleDocs}>⬇ Google Docs (.html)</Btn>
+            <Btn variant="secondary" onClick={downloadGoogleDocs}>⬇ Google Docs herunterladen (.html)</Btn>
 
             {sendState !== 'sent' ? (<>
               <Btn onClick={openMailto} variant="secondary">
@@ -900,24 +927,25 @@ baoo Sales Team`)
               title="Vertragsvorschau" sandbox="allow-same-origin" />
           </div>
 
-          {/* Download bar below preview */}
-          <div style={{ marginTop: 16, padding: '16px 20px', background: '#F8FAFC',
-            border: '1px solid #E2E8F0', borderRadius: 10, display: 'flex', gap: 12,
-            alignItems: 'center', flexWrap: 'wrap' }}>
-            <span style={{ fontSize: 12.5, fontWeight: 600, color: '#64748B', marginRight: 4 }}>Dokument herunterladen:</span>
-            <button onClick={openPrint} style={{
-              padding: '9px 20px', borderRadius: 8, fontSize: 13.5, fontWeight: 600, cursor: 'pointer',
-              background: '#1E3A5F', color: '#fff', border: 'none',
-            }}>⬇ Als PDF speichern</button>
-            <button onClick={downloadGoogleDocs} style={{
-              padding: '9px 20px', borderRadius: 8, fontSize: 13.5, fontWeight: 600, cursor: 'pointer',
-              background: '#fff', color: '#1E3A5F', border: '1.5px solid #1E3A5F',
-            }}>⬇ Google Docs (.html)</button>
-            <span style={{ fontSize: 12, color: '#94A3B8' }}>→ In Google Drive hochladen → mit Google Docs öffnen</span>
+
+
+          <div style={{
+            marginBottom: 24, padding: '18px 22px',
+            background: '#FFF8E7',
+            border: '2px solid #F59E0B',
+            borderRadius: 10,
+          }}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: '#92400E', marginBottom: 10 }}>
+              📋 Wie geht es weiter?
+            </div>
+            <div style={{ color: '#78350F', fontSize: 13.5, lineHeight: 1.8 }}>
+              <div>1. Kundenordner unter <strong>Offene Verträge</strong> in Google Drive anlegen</div>
+              <div>2. Docs-Datei (.html) herunterladen → in den Ordner hochladen → mit <strong>Google Docs</strong> öffnen</div>
+              <div>3. In Google Docs: <strong>Extras → eSignature</strong> → Unterschriftsfeld für <strong>GF Marco Werner</strong> setzen</div>
+              <div>4. Signing-Anfrage absenden — Marco erhält einen Link per E-Mail zur Unterzeichnung</div>
+              <div>5. Nach Unterzeichnung: fertig signiertes Dokument + <strong>AVV</strong> an Kunden senden</div>
+            </div>
           </div>
-          <p style={{ fontSize: 12, color: '#94A3B8', margin: '-10px 0 16px' }}>
-            💡 PDF-Tipp: Im Druckdialog unter „Weitere Einstellungen" → <strong>Kopf- und Fußzeilen deaktivieren</strong>
-          </p>
 
           <div style={{ marginTop: 16 }}>
             <Btn variant="secondary" onClick={() => setStep(4)}>← Bearbeiten</Btn>
