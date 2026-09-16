@@ -67,7 +67,7 @@ function buildContractHTML(d) {
       <td style="padding:8px;border:1px solid #ccc;font-weight:bold">3</td>
       <td style="padding:8px;border:1px solid #ccc">
         <strong>Enterprise Customer Service Level (${d.serviceLevel})</strong><br/>
-        ${tier.features.map(([k,v]) => `– ${k}: ${v}`).join('<br/>')}
+        ${tier.features.map(([k,v]) => `– ${k}: ${v}`).join('<br/>')}<br/><br/><em>Andere Service-Pakete sind jederzeit zubuchbar (optional).</em>
       </td>
       <td style="padding:8px;border:1px solid #ccc;text-align:center">1</td>
       <td style="padding:8px;border:1px solid #ccc;text-align:center">Monat</td>
@@ -179,7 +179,7 @@ ${(parseFloat(d.setupPreis.replace(',','.')) || 0) > 0 ? '<p>Der Auftragnehmer w
   – Voice- und Texteingabe in &gt;50 Sprachen<br/><br/>
   <strong>Inkl. Volumen:</strong> ${d.nachrichtenProMonat} Nachrichten/Monat<br/>
   Jede weitere Nachricht: ${d.preisProNachricht}&nbsp;€</td>
-  <td style="text-align:center">1</td><td style="text-align:center">Monat</td><td><strong>${d.monatlichPreis}&nbsp;€</strong></td>
+  <td style="text-align:center">1</td><td style="text-align:center">Monat</td><td><strong>${d.monatlichPreis}&nbsp;€</strong><div style="font-size:9.5pt;color:#666;margin-top:3px">Sofortpreis gültig bis ${d.sofortpreisGueltigBis}</div><strong>${_regelpreisStr}&nbsp;€</strong><div style="font-size:9.5pt;color:#666;margin-top:3px">Regelpreis ab ${_abDatum}</div></td>
 </tr>
 ${serviceRow}
 </table>
@@ -749,11 +749,12 @@ baoo Sales Team`)
                         </div>
                       ))}
                     </div>
-                    <div style={{ borderTop: '1px solid #E2E8F0', paddingTop: 10 }}>
+                    <div style={{ paddingTop: 10 }}>
                       <p style={{ fontSize: 10, color: '#94A3B8', margin: '0 0 2px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Monatlich (netto)</p>
-                      <p style={{ fontSize: 16, fontWeight: 700, color: active ? '#2563EB' : '#1E293B', margin: 0 }}>
+                      <p style={{ fontSize: 16, fontWeight: 700, color: active ? '#2563EB' : '#1E293B', margin: '0 0 6px' }}>
                         {tier === 'Standard' ? <span style={{ fontSize: 13, fontWeight: 500, color: '#059669' }}>Inklusive</span> : `${t.preis} €`}
                       </p>
+                      <p style={{ fontSize: 11, color: '#64748B', fontStyle: 'italic', lineHeight: 1.4, margin: 0 }}>Andere Service-Pakete jederzeit buchbar (optional)</p>
                     </div>
                   </div>
                 )
