@@ -141,7 +141,7 @@ function buildContractHTML(d) {
 
 <h2>§2 Obliegenheiten des Kunden</h2>
 <p>Der Auftraggeber stellt einen zentralen Ansprechpartner für das technische Setup des KI-Agenten zur Verfügung, da die Einrichtung individuell für den Auftraggeber erfolgt.</p>
-<p>Der Auftraggeber stellt dem Auftragnehmer relevante Daten und Informationen bereit, auf deren Grundlage den KI-Agenten trainiert und laufend betrieben wird. Dazu gehören insbesondere Produkt-, Leistungs- und Servicedaten des Auftraggebers. Die Bereitstellung kann beispielsweise per API oder Datenfeed erfolgen.</p>
+<p>Der Auftraggeber stellt dem Auftragnehmer relevante Daten und Informationen bereit, auf deren Grundlage der KI-Agent laufend betrieben wird. Dazu gehören insbesondere Produkt-, Leistungs- und Servicedaten des Auftraggebers. Die Bereitstellung kann beispielsweise per API oder Datenfeed erfolgen.</p>
 <p>Die technische Integration des KI-Agenten durch den Auftraggeber erfolgt gemäß der gemeinsam vereinbarten Implementierungsmethode.</p>
 
 <h2>§3 Softwareüberlassung</h2>
