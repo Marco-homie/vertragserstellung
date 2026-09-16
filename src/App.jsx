@@ -127,7 +127,7 @@ function buildContractHTML(d) {
   </td>
 </tr>
 </table>
-<p>Köln, den ${d.vertragsdatum}</p>
+<p style="margin-top:20px">Köln, den ${d.vertragsdatum}</p>
 
 <h2>Präambel</h2>
 <p>Der Auftragnehmer hat mit <strong>homie AI</strong> eine KI-gestützte Beratungssoftware entwickelt (nachfolgend auch "KI-Agent" oder "Software" genannt), die Unternehmen aller Branchen dabei unterstützt, ihren Kunden, Partnern und Interessenten einen intelligenten, automatisierten Kontakt rund um die Uhr zu bieten.</p>
@@ -752,7 +752,7 @@ baoo Sales Team`)
             </div>
           </div>
 
-          <Card title="Enterprise Customer Service Level" hint="Standard ist immer inklusive – Express und Priority als Upgrade buchbar. Bitte immer Standard auswählen; höhere Pakete nur bei expliziter Nachfrage anbieten. Express & Priority werden vor allem von Customer Success empfohlen.">
+          <Card title="Enterprise Customer Service Level" hint="Standard ist immer inklusive – Express und Priority als Upgrade buchbar. Bitte immer Standard auswählen; höhere Pakete nur bei expliziter Nachfrage anbieten. Express & Priority werden vor allem von Customer Success empfohlen. — Keine Sorge: Die negativen Aussagen beim Standard-Paket erscheinen nicht im Vertrag.">
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginTop: 4 }}>
               {Object.keys(TIER_DATA).map(tier => {
                 const t = TIER_DATA[tier]
