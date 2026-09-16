@@ -61,6 +61,14 @@ function buildContractHTML(d) {
     }
     return d.sofortpreisGueltigBis
   })()
+  const _setupAbDatum = (() => {
+    const p = (d.setupGueltigBis||'').split('.')
+    if (p.length === 3) {
+      const dt = new Date(parseInt(p[2]), parseInt(p[1])-1, parseInt(p[0])+1)
+      return String(dt.getDate()).padStart(2,'0')+'.'+String(dt.getMonth()+1).padStart(2,'0')+'.'+dt.getFullYear()
+    }
+    return d.setupGueltigBis
+  })()
   const tier = TIER_DATA[d.serviceLevel] || TIER_DATA['Standard']
   const serviceRow = `
     <tr>
@@ -155,7 +163,7 @@ ${(parseFloat(d.setupPreis.replace(',','.')) || 0) > 0 ? '<p>Der Auftragnehmer w
   – Interface auf CI des Auftraggebers anpassen<br/>
   – Technische Integrationslösung bereitstellen (z. B. JavaScript Snippet, iFrame oder individuelle Schnittstelle)<br/>
   – Dashboard für Administration bereitstellen</td>
-  <td style="text-align:center">1</td><td style="text-align:center">Pauschal</td><td><strong>${d.setupPreis}&nbsp;€</strong></td>
+  <td style="text-align:center">1</td><td style="text-align:center">Pauschal</td><td>${d.setupPreisStaffelung ? `<strong>${d.setupPreis}&nbsp;€</strong><div style="font-size:9.5pt;color:#666;margin-top:3px">Setup-Preis gültig bis ${d.setupGueltigBis}</div><strong>${d.setupRegelpreis}&nbsp;€</strong><div style="font-size:9.5pt;color:#666;margin-top:3px">Setup-Preis ab ${_setupAbDatum}</div>` : `<strong>${d.setupPreis}&nbsp;€</strong>`}</td>
 </tr>
 </table>
 <p><em>Alle Preise zzgl. gesetzlicher Mehrwertsteuer (19%)</em></p>
@@ -423,7 +431,7 @@ export default function App() {
     unterzeichner1Name: '', unterzeichner1Position: '',
     hatZweitenUnterzeichner: false, unterzeichner2Name: '', unterzeichner2Position: '',
     kiAssistenten: '', produktseiten: '', nachrichtenProMonat: '', preisProNachricht: '',
-    setupPreis: '', monatlichPreis: '',
+    setupPreis: '', setupPreisStaffelung: false, setupGueltigBis: '', setupRegelpreis: '', monatlichPreis: '',
     serviceLevel: 'Standard',
     vertragslaufzeit: '12', testphase: 'keine', sonderkuendigungsrecht: '2',
     vertragsdatum: new Date().toLocaleDateString('de-DE'),
@@ -532,7 +540,7 @@ baoo Sales Team`)
   // Guards
   const step1ok = f.firmenname && f.strasse && f.hausnummer && f.plz && f.stadt && f.unterzeichner1Name && f.unterzeichner1Position
   const step2ok = f.kiAssistenten && f.produktseiten && f.nachrichtenProMonat && f.preisProNachricht
-  const step3ok = f.setupPreis && f.monatlichPreis && /^\d{2}\.\d{2}\.\d{4}$/.test(f.sofortpreisGueltigBis)
+  const step3ok = f.setupPreis && f.monatlichPreis && /^\d{2}\.\d{2}\.\d{4}$/.test(f.sofortpreisGueltigBis) && (!f.setupPreisStaffelung || (f.setupRegelpreis && /^\d{2}\.\d{2}\.\d{4}$/.test(f.setupGueltigBis)))
   const step4ok = f.vertragsdatum
 
   const hasApiKey = !!localStorage.getItem('baoo_api_key')
@@ -686,6 +694,27 @@ baoo Sales Team`)
                 <span style={{ position: 'absolute', right: 13, top: '50%', transform: 'translateY(-50%)', color: '#94A3B8', pointerEvents: 'none' }}>€</span>
               </div>
             </Field>
+            <Toggle on={f.setupPreisStaffelung} onToggle={v => set('setupPreisStaffelung', v)} label="Zeitlich gestaffelter Setup-Preis" sub="Zwei Preise mit Datum — z.B. bei zeitlich befristetem Angebot" />
+            {f.setupPreisStaffelung && (
+              <Row>
+                <div style={{ flex: 1 }}>
+                  <Field label="Setup-Preis gültig bis" required>
+                    <Inp value={f.setupGueltigBis} onChange={v => set('setupGueltigBis', v)} placeholder="TT.MM.JJJJ" />
+                    <p style={{ fontSize: 11.5, marginTop: 4, color: f.setupGueltigBis && !/^\d{2}\.\d{2}\.\d{4}$/.test(f.setupGueltigBis) ? '#EF4444' : '#94A3B8' }}>
+                      {f.setupGueltigBis && !/^\d{2}\.\d{2}\.\d{4}$/.test(f.setupGueltigBis) ? '⚠ Bitte im Format TT.MM.JJJJ eingeben' : 'Format: TT.MM.JJJJ'}
+                    </p>
+                  </Field>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <Field label="Setup-Preis ab Folgedatum (netto)" required>
+                    <div style={{ position: 'relative' }}>
+                      <Inp value={f.setupRegelpreis} onChange={v => set('setupRegelpreis', v)} placeholder="" />
+                      <span style={{ position: 'absolute', right: 13, top: '50%', transform: 'translateY(-50%)', color: '#94A3B8', pointerEvents: 'none' }}>€</span>
+                    </div>
+                  </Field>
+                </div>
+              </Row>
+            )}
             <Row>
               <div style={{ flex: 1 }}>
                 <Field label="Sofortpreis / Monat (netto)" required>
