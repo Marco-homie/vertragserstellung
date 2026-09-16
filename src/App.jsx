@@ -119,17 +119,32 @@ function buildContractHTML(d) {
   td{border:1px solid #ccc;padding:7px 9px;vertical-align:top}
   p{margin:5px 0}
   .c{text-align:center}
-  @media print{@page{margin:2cm 2.5cm 2cm 2cm}.logo-header{position:fixed;top:12px;right:24px;width:80px;filter:grayscale(100%)}}
+  @media print{@page{margin:2cm 2.5cm 2cm 2cm}thead{display:table-header-group}}
 </style>
 </head>
 <body>
-<div style="text-align:right;margin-bottom:8px"><img src="${d.logoSrc}" class="logo-header" style="width:80px;filter:grayscale(100%)" alt="homie AI" /></div>
+<table style="width:100%;border-collapse:collapse;margin-bottom:16px">
+<thead><tr><td style="border:none;padding:0;text-align:right">
+  <img src="${d.logoSrc}" style="width:72px;filter:grayscale(100%)" alt="homie AI" />
+</td></tr></thead>
+<tbody><tr><td style="border:none;padding:0;height:0"></td></tr></tbody>
+</table>
 <h1>Software-Nutzungsvertrag: KI-Agent "homie AI"</h1>
 <p class="c" style="color:#555;font-size:10pt">Softwareanwendung für: ${d.firmenname}</p>
-<p>von</p>
-<p><strong>baoo Technologies GmbH</strong><br/>c/o Projekton, Salierring 32<br/>50677 Köln<br/>– nachfolgend <strong>"Auftragnehmer"</strong> genannt –</p>
-<p>an</p>
-<p><strong>${d.firmenname}</strong><br/>${d.strasse} ${d.hausnummer}${d.adresszusatz ? '<br/>' + d.adresszusatz : ''}<br/>${d.plz} ${d.stadt}<br/>${d.land}<br/>– nachfolgend <strong>"Auftraggeber"</strong> genannt –</p>
+<table style="width:100%;border-collapse:collapse;margin:16px 0">
+<tr>
+  <td style="width:50%;border:none;padding:0;padding-right:40px;vertical-align:top">
+    <p style="font-size:9pt;color:#888;margin:0 0 6px 0">von</p>
+    <strong>baoo Technologies GmbH</strong><br/>c/o Projekton, Salierring 32<br/>50677 Köln<br/>
+    <span style="color:#555">– nachfolgend <strong>"Auftragnehmer"</strong> genannt –</span>
+  </td>
+  <td style="width:50%;border:none;padding:0;vertical-align:top">
+    <p style="font-size:9pt;color:#888;margin:0 0 6px 0">an</p>
+    <strong>${d.firmenname}</strong><br/>${d.strasse} ${d.hausnummer}${d.adresszusatz ? '<br/>' + d.adresszusatz : ''}<br/>${d.plz} ${d.stadt}<br/>${d.land}<br/>
+    <span style="color:#555">– nachfolgend <strong>"Auftraggeber"</strong> genannt –</span>
+  </td>
+</tr>
+</table>
 <p>Köln, den ${d.vertragsdatum}</p>
 
 <h2>Präambel</h2>
@@ -152,24 +167,48 @@ function buildContractHTML(d) {
 ${(parseFloat(d.setupPreis.replace(',','.')) || 0) > 0 ? '<p>Der Auftragnehmer wird das initiale technische SetUp für die individuelle Software-Anpassung und Bereitstellung für den Auftraggeber einmalig entgeltlich abrechnen.</p>' : ''}
 
 <h2>§4 Leistungspaket und Softwarenutzung</h2>
-<p><strong>Einmalige Leistungen:</strong></p>
-<table>
-<tr><th style="width:40px">Pos.</th><th>Leistung</th><th style="width:50px">Anz.</th><th style="width:80px">Einheit</th><th style="width:120px">Preis (netto)</th></tr>
-<tr>
-  <td><strong>1</strong></td>
-  <td><strong>Individuelles technisches Set-Up des KI-Agenten</strong>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px 16px;margin-top:6px;font-size:10pt;line-height:1.5">
-    <div>– Daten &amp; Inhalte anbinden, Daten-Cluster anlegen</div>
-    <div>– Interface auf CI des Auftraggebers anpassen</div>
-    <div>– Live-Daten-Abgleich einrichten</div>
-    <div>– Technische Integration bereitstellen (JS, iFrame o. ä.)</div>
-    <div>– Dialog und Kommunikation anpassen</div>
-    <div>– Dashboard für Administration bereitstellen</div>
-  </div></td>
-  <td style="text-align:center">1</td><td style="text-align:center">Pauschal</td><td>${d.setupPreisStaffelung ? `<strong>${d.setupPreis}&nbsp;€</strong><div style="font-size:9.5pt;color:#666;margin-top:3px">Setup-Preis gültig bis ${d.setupGueltigBis}</div><strong>${d.setupRegelpreis}&nbsp;€</strong><div style="font-size:9.5pt;color:#666;margin-top:3px">Setup-Preis ab ${_setupAbDatum}</div>` : `<strong>${d.setupPreis}&nbsp;€</strong>`}</td>
-</tr>
-</table>
-<p><em>Alle Preise zzgl. gesetzlicher Mehrwertsteuer (19%)</em></p>
+
+<div style="page-break-inside:avoid;break-inside:avoid;border:1px solid #ccc;border-radius:4px;padding:14px 16px;margin-bottom:12px">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+    <div><strong>Pos. 1 &nbsp;·&nbsp; Individuelles technisches Set-Up des KI-Agenten</strong> <span style="font-size:9.5pt;color:#666">— einmalig, pauschal</span></div>
+    <div style="font-size:11pt;font-weight:bold;white-space:nowrap;padding-left:24px">${d.setupPreisStaffelung ? `${d.setupPreis}&nbsp;€ bis ${d.setupGueltigBis} / danach ${d.setupRegelpreis}&nbsp;€` : `${d.setupPreis}&nbsp;€`}</div>
+  </div>
+  <div style="font-size:10pt;color:#333;line-height:1.7">
+    – Daten &amp; Inhalte des Auftraggebers anbinden und in einem individuellen Daten-Cluster anlegen<br/>
+    – Laufenden Live-Daten-Abgleich einrichten<br/>
+    – Dialog und Kommunikation des KI-Agenten anpassen<br/>
+    – Interface auf die Corporate Identity (CI) des Auftraggebers anpassen<br/>
+    – Technische Integrationslösung bereitstellen (z.&nbsp;B. JavaScript-Snippet, iFrame oder individuelle Schnittstelle)<br/>
+    – Dashboard für die Software-Administration bereitstellen
+  </div>
+</div>
+
+<div style="page-break-inside:avoid;break-inside:avoid;border:1px solid #ccc;border-radius:4px;padding:14px 16px;margin-bottom:12px">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+    <div><strong>Pos. 2 &nbsp;·&nbsp; Leistungspaket ENTERPRISE</strong> <span style="font-size:9.5pt;color:#666">— monatlich</span></div>
+    <div style="font-size:11pt;font-weight:bold;white-space:nowrap;padding-left:24px">
+      ${d.monatlichPreis}&nbsp;€ bis ${d.sofortpreisGueltigBis} / danach ${_regelpreisStr}&nbsp;€
+    </div>
+  </div>
+  <div style="font-size:10pt;color:#333;line-height:1.7">
+    <strong>Umfang:</strong> ${d.kiAssistenten} KI-Agenten · ${d.produktseiten} Produktdetailseiten mit KI-Fragen · inkl. ${d.nachrichtenProMonat} Nachrichten/Monat · je weitere Nachricht ${d.preisProNachricht}&nbsp;€<br/>
+    <strong>Data Dashboard:</strong> Live-Einsicht Kunden-Interaktionen &amp; Nutzerbewertungen · Auswertung der Kunden-Interaktionen · Individuelle Einstellungen · bis zu 10 Zugänge<br/>
+    <strong>Inklusivleistungen:</strong> White-Label KI-Agenten-Lösung · Individuelle Tonalität · 24/7 Live-Daten Abgleich &amp; Verfügbarkeit · Voice- &amp; Texteingabe in &gt;50 Sprachen
+  </div>
+</div>
+
+<div style="page-break-inside:avoid;break-inside:avoid;border:1px solid #ccc;border-radius:4px;padding:14px 16px;margin-bottom:12px">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+    <div><strong>Pos. 3 &nbsp;·&nbsp; Enterprise Customer Service Level (${d.serviceLevel})</strong> <span style="font-size:9.5pt;color:#666">— monatlich</span></div>
+    <div style="font-size:11pt;font-weight:bold;white-space:nowrap;padding-left:24px">${d.serviceLevel === 'Standard' ? 'Inklusive' : `${tier.preis}&nbsp;€`}</div>
+  </div>
+  <div style="font-size:10pt;color:#333;line-height:1.7">
+    ${tier.features.map(([k,v]) => `– <strong>${k}:</strong> ${v}`).join('<br/>')}
+  </div>
+  <div style="font-size:9.5pt;color:#666;font-style:italic;margin-top:8px">Andere Service-Pakete sind jederzeit zubuchbar (optional).</div>
+</div>
+
+<p style="font-size:9.5pt;color:#555"><em>Alle Preise zzgl. gesetzlicher Mehrwertsteuer (19&nbsp;%)</em></p>
 
 <p><strong>Monatliche wiederkehrende Leistungen – Leistungspaket "ENTERPRISE":</strong></p>
 <table>
