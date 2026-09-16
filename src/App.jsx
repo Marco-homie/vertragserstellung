@@ -97,19 +97,20 @@ function buildContractHTML(d) {
 <html lang="de">
 <head><meta charset="UTF-8"/><title>Vertrag – ${d.firmenname}</title>
 <style>
-  body{font-family:Arial,sans-serif;font-size:11pt;line-height:1.65;color:#111;max-width:840px;margin:0 auto;padding:48px 40px}
-  h1{font-size:15pt;text-align:center;margin-bottom:4px}
-  h2{font-size:11.5pt;font-weight:bold;margin-top:22px;border-bottom:1.5px solid #ddd;padding-bottom:4px;page-break-after:avoid;break-after:avoid}p{margin:5px 0;orphans:4;widows:4}h2+p{page-break-before:avoid}
-  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:10.5pt}
-  th{background:#1E3A5F;color:#fff;padding:8px 10px;text-align:left}
-  td{border:1px solid #ccc;padding:7px 9px;vertical-align:top}td[style*="border:none"]{border:none!important}
-  p{margin:5px 0}
+  body{font-family:Arial,sans-serif;font-size:11pt;line-height:1.7;color:#111;max-width:820px;margin:0 auto;padding:60px 64px}
+  h1{font-size:15pt;text-align:center;margin:0 0 6px}
+  h2{font-size:11.5pt;font-weight:bold;margin:16px 0 3px;border-bottom:1.5px solid #ddd;padding-bottom:1px}
+  p{margin:4px 0;orphans:3;widows:3;font-size:11pt}
+  table{width:100%;border-collapse:collapse;margin:8px 0;font-size:11pt}
+  th{background:#1E3A5F;color:#fff;padding:7px 10px;text-align:left;font-size:11pt}
+  td{border:1px solid #ccc;padding:7px 9px;vertical-align:top;font-size:11pt}
+  td[style*="border:none"]{border:none!important;padding:0!important}
   .c{text-align:center}
-  @media print{@page{margin:2cm 2.5cm 2cm 2cm}.logo-r{position:fixed;top:14px;right:28px;width:68px}}
+  .pos{margin-bottom:10px;font-size:11pt}
+  @media print{@page{margin:2.2cm 2.5cm 2.2cm 2.5cm}}
 </style>
 </head>
 <body>
-<div style="text-align:right;margin-bottom:12px"><img src="${d.logoSrc}" class="logo-r" style="width:72px;filter:grayscale(100%)" alt="homie AI"/></div>
 <h1>Software-Nutzungsvertrag: KI-Agent "homie AI"</h1>
 <p class="c" style="color:#555;font-size:10pt">Softwareanwendung für: ${d.firmenname}</p>
 <table style="width:100%;border-collapse:collapse;margin:16px 0">
@@ -149,12 +150,10 @@ ${(parseFloat(d.setupPreis.replace(',','.')) || 0) > 0 ? '<p>Der Auftragnehmer w
 
 <h2>§4 Leistungspaket und Softwarenutzung</h2>
 
-<div style="page-break-inside:avoid;break-inside:avoid;border:1px solid #ccc;border-radius:4px;padding:14px 16px;margin-bottom:12px">
-  <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
-    <div><strong>Pos. 1 &nbsp;·&nbsp; Individuelles technisches Set-Up des KI-Agenten</strong> <span style="font-size:9.5pt;color:#666">— einmalig, pauschal</span></div>
-    <div style="font-size:10.5pt;font-weight:bold;white-space:nowrap;padding-left:24px;line-height:1.6">${d.setupPreisStaffelung ? `Bei Unterschrift bis ${d.setupGueltigBis}:<br/><span style="font-size:12pt">${d.setupPreis}&nbsp;€</span><br/><span style="font-weight:normal;font-size:9.5pt;color:#555">Ab ${_setupAbDatum}: ${d.setupRegelpreis}&nbsp;€</span>` : `<span style="font-size:12pt">${d.setupPreis}&nbsp;€</span>`}</div>
-  </div>
-  <div style="font-size:10pt;color:#333;line-height:1.7">
+<div style="margin-bottom:16px;font-size:11pt">
+  <p style="margin:0 0 4px"><strong>Pos. 1 &nbsp;·&nbsp; Individuelles technisches Set-Up des KI-Agenten</strong> <span style="color:#666">— einmalig, pauschal</span></p>
+  <p style="margin:0 0 8px;font-weight:bold">${d.setupPreisStaffelung ? `Setup-Preis bis ${d.setupGueltigBis}: ${d.setupPreis}&nbsp;€<br/>Setup-Preis ab ${_setupAbDatum}: ${d.setupRegelpreis}&nbsp;€` : `${d.setupPreis}&nbsp;€`}</p>
+  <div style="font-size:11pt;color:#333;line-height:1.7">
     – Daten &amp; Inhalte des Auftraggebers anbinden und in einem individuellen Daten-Cluster anlegen<br/>
     – Laufenden Live-Daten-Abgleich einrichten<br/>
     – Dialog und Kommunikation des KI-Agenten anpassen<br/>
@@ -164,29 +163,23 @@ ${(parseFloat(d.setupPreis.replace(',','.')) || 0) > 0 ? '<p>Der Auftragnehmer w
   </div>
 </div>
 
-<div style="page-break-inside:avoid;break-inside:avoid;border:1px solid #ccc;border-radius:4px;padding:14px 16px;margin-bottom:12px">
-  <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
-    <div><strong>Pos. 2 &nbsp;·&nbsp; Leistungspaket ENTERPRISE</strong> <span style="font-size:9.5pt;color:#666">— monatlich</span></div>
-    <div style="font-size:11pt;font-weight:bold;white-space:nowrap;padding-left:24px">
-      Bei Unterschrift bis ${d.sofortpreisGueltigBis}:<br/><span style="font-size:12pt">${d.monatlichPreis}&nbsp;€ / Monat</span><br/><span style="font-weight:normal;font-size:9.5pt;color:#555">Ab ${_abDatum}: ${_regelpreisStr}&nbsp;€ / Monat (Regelpreis)</span>
-    </div>
-  </div>
-  <div style="font-size:10pt;color:#333;line-height:1.7">
+<div style="margin-bottom:16px;font-size:11pt">
+  <p style="margin:0 0 4px"><strong>Pos. 2 &nbsp;·&nbsp; Leistungspaket ENTERPRISE</strong> <span style="color:#666">— monatlich</span></p>
+  <p style="margin:0 0 8px;font-weight:bold">Sofortpreis bis ${d.sofortpreisGueltigBis}: ${d.monatlichPreis}&nbsp;€ / Monat<br/>Regelpreis ab ${_abDatum}: ${_regelpreisStr}&nbsp;€ / Monat</p>
+  <div style="font-size:11pt;color:#333;line-height:1.7">
     <strong>Umfang:</strong> ${d.kiAssistenten} KI-Agenten · ${d.produktseiten} Produktdetailseiten mit KI-Fragen · inkl. ${d.nachrichtenProMonat} Nachrichten/Monat · je weitere Nachricht ${d.preisProNachricht}&nbsp;€<br/>
     <strong>Data Dashboard:</strong> Live-Einsicht Kunden-Interaktionen &amp; Nutzerbewertungen · Auswertung der Kunden-Interaktionen · Individuelle Einstellungen · bis zu 10 Zugänge<br/>
     <strong>Inklusivleistungen:</strong> White-Label KI-Agenten-Lösung · Individuelle Tonalität · 24/7 Live-Daten Abgleich &amp; Verfügbarkeit · Voice- &amp; Texteingabe in &gt;50 Sprachen
   </div>
 </div>
 
-<div style="page-break-inside:avoid;break-inside:avoid;border:1px solid #ccc;border-radius:4px;padding:14px 16px;margin-bottom:12px">
-  <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
-    <div><strong>Pos. 3 &nbsp;·&nbsp; Enterprise Customer Service Level (${d.serviceLevel})</strong> <span style="font-size:9.5pt;color:#666">— monatlich</span></div>
-    <div style="font-size:11pt;font-weight:bold;white-space:nowrap;padding-left:24px">${d.serviceLevel === 'Standard' ? 'Inklusive' : `${tier.preis}&nbsp;€`}</div>
+<div style="margin-bottom:16px;font-size:11pt">
+  <p style="margin:0 0 4px"><strong>Pos. 3 &nbsp;·&nbsp; Enterprise Customer Service Level (${d.serviceLevel})</strong> <span style="color:#666">— monatlich</span></p>
+  <p style="margin:0 0 8px;font-weight:bold">${d.serviceLevel === 'Standard' ? 'Inklusive' : `${tier.preis}&nbsp;€ / Monat`}</p>
+  <div style="font-size:11pt;color:#333;line-height:1.7">
+    ${tier.features.filter(([k,v]) => v.toLowerCase() !== 'nein' && !v.includes('Anfrage')).map(([k,v]) => `– <strong>${k}:</strong> ${v}`).join('<br/>')}
   </div>
-  <div style="font-size:10pt;color:#333;line-height:1.7">
-    ${tier.features.map(([k,v]) => `– <strong>${k}:</strong> ${v}`).join('<br/>')}
-  </div>
-  <div style="font-size:9.5pt;color:#666;font-style:italic;margin-top:8px">Andere Service-Pakete sind jederzeit zubuchbar (optional).</div>
+  <div style="font-size:11pt;color:#666;font-style:italic;margin-top:8px">Andere Service-Pakete sind jederzeit zubuchbar (optional).</div>
 </div>
 
 <p style="font-size:9.5pt;color:#555"><em>Alle Preise zzgl. gesetzlicher Mehrwertsteuer (19&nbsp;%)</em></p>
@@ -238,28 +231,27 @@ ${d.sonstiges ? `
 <p>${d.sonstiges.replace(/\n/g, '<br/>')}</p>
 ` : ''}
 
-<div style="page-break-inside:avoid;break-inside:avoid;margin-top:48px">
-<p style="font-size:10pt;color:#555;margin-bottom:32px">Köln, den ${d.vertragsdatum}</p>
+<div style="page-break-inside:avoid;break-inside:avoid;margin-top:40px">
+<p style="color:#555;margin-bottom:16px">Köln, den ${d.vertragsdatum}</p>
 <table style="width:100%;border-collapse:collapse;table-layout:fixed">
 <tr>
-  <td style="width:50%;border:none;padding:0;padding-right:48px;vertical-align:bottom">
-    <div style="height:48px">&nbsp;</div>
-    <div style="border-bottom:1.5px solid #333;width:100%;margin-bottom:8px">&nbsp;</div>
-    <div style="font-size:10pt;font-weight:bold">${d.firmenname}</div>
-    <div style="font-size:10pt;color:#555;margin-top:2px">${d.unterzeichner1Name} · ${d.unterzeichner1Position}</div>
+  <td style="width:50%;border:none;padding:0 48px 0 0;vertical-align:top">
+    <div style="height:44px">&nbsp;</div>
+    <div style="border-bottom:1.5px solid #333;margin-bottom:8px"></div>
+    <div style="font-weight:bold">${d.firmenname}</div>
+    <div style="color:#555;margin-top:2px">${d.unterzeichner1Name} · ${d.unterzeichner1Position}</div>
   </td>
-  <td style="width:50%;border:none;padding:0;vertical-align:bottom">
-    <div style="height:48px">&nbsp;</div>
-    <div style="border-bottom:1.5px solid #333;width:100%;margin-bottom:8px">&nbsp;</div>
-    <div style="font-size:10pt;font-weight:bold">baoo Technologies GmbH</div>
-    <div style="font-size:10pt;color:#555;margin-top:2px">${d.gfName} · ${d.gfPosition}</div>
+  <td style="width:50%;border:none;padding:0;vertical-align:top">
+    <div style="height:44px">&nbsp;</div>
+    <div style="border-bottom:1.5px solid #333;margin-bottom:8px"></div>
+    <div style="font-weight:bold">baoo Technologies GmbH</div>
+    <div style="color:#555;margin-top:2px">${d.gfName} · ${d.gfPosition}</div>
   </td>
 </tr>
 </table>
 </div>
 
 ${sig2}
-<p style="margin-top:28px;font-size:9pt;color:#888">baoo Technologies GmbH &nbsp;|&nbsp; c/o Projekton, Salierring 32, 50677 Köln</p>
 </body></html>`
 }
 
@@ -760,7 +752,7 @@ baoo Sales Team`)
             </div>
           </div>
 
-          <Card title="Enterprise Customer Service Level" hint="Standard ist immer inklusive – Express und Priority als Upgrade buchbar">
+          <Card title="Enterprise Customer Service Level" hint="Standard ist immer inklusive – Express und Priority als Upgrade buchbar. Bitte immer Standard auswählen; höhere Pakete nur bei expliziter Nachfrage anbieten. Express & Priority werden vor allem von Customer Success empfohlen.">
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginTop: 4 }}>
               {Object.keys(TIER_DATA).map(tier => {
                 const t = TIER_DATA[tier]
@@ -979,7 +971,7 @@ baoo Sales Team`)
               <div>3. In Google Docs: <strong>Einfügen → Kopf- und Fußzeile → Kopfzeile</strong> → homie AI Logo einfügen und rechtsbündig ausrichten (einmalig pro Dokument, dauert ~30 Sekunden)</div>
               <div>4. In Google Docs: <strong>Extras → eSignature</strong> → Unterschriftsfeld für <strong>GF Marco Werner</strong> setzen</div>
               <div>5. Signing-Anfrage absenden — Marco erhält einen Link per E-Mail zur Unterzeichnung</div>
-              <div>6. Nach Unterzeichnung: fertig signiertes Dokument + <strong>AVV</strong> an Kunden senden</div>
+              <div>6. Nach Unterzeichnung: fertig signiertes Dokument + <strong>AVV &amp; TOMs</strong> an Kunden senden</div>
             </div>
           </div>
 
