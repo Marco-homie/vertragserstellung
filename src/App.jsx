@@ -687,8 +687,8 @@ baoo Sales Team`)
           <p style={{ fontSize: 21, fontWeight: 700, color: '#1E2D40', marginBottom: 3 }}>Preise & Konditionen</p>
           <p style={{ fontSize: 13.5, color: '#64748B', marginBottom: 26 }}>Alle Preise netto, zzgl. 19% MwSt.</p>
 
-          <Card title="Einmalige & monatliche Vergütung">
-            <Field label="Setup-Preis (einmalig, netto)" required>
+          <Card title="Setup-Gebühr (einmalig)">
+            <Field label="Setup-Preis (netto)" required>
               <div style={{ position: 'relative' }}>
                 <Inp value={f.setupPreis} onChange={v => set('setupPreis', v)} placeholder="" />
                 <span style={{ position: 'absolute', right: 13, top: '50%', transform: 'translateY(-50%)', color: '#94A3B8', pointerEvents: 'none' }}>€</span>
@@ -715,6 +715,9 @@ baoo Sales Team`)
                 </div>
               </Row>
             )}
+          </Card>
+
+          <Card title="Monatliche Vergütung">
             <Row>
               <div style={{ flex: 1 }}>
                 <Field label="Sofortpreis / Monat (netto)" required>
