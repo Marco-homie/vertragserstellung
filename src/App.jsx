@@ -70,20 +70,6 @@ function buildContractHTML(d) {
     return d.setupGueltigBis
   })()
   const tier = TIER_DATA[d.serviceLevel] || TIER_DATA['Standard']
-  const serviceRow = `
-    <tr>
-      <td style="padding:8px;border:1px solid #ccc;font-weight:bold">3</td>
-      <td style="padding:8px;border:1px solid #ccc">
-        <strong>Enterprise Customer Service Level (${d.serviceLevel})</strong>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px 16px;margin-top:6px;font-size:10pt;line-height:1.5">
-          ${tier.features.map(([k,v]) => `<div>– ${k}: ${v}</div>`).join('')}
-        </div>
-        <div style="margin-top:6px;font-size:10pt;font-style:italic"><em>Andere Service-Pakete sind jederzeit zubuchbar (optional).</em></div>
-      </td>
-      <td style="padding:8px;border:1px solid #ccc;text-align:center">1</td>
-      <td style="padding:8px;border:1px solid #ccc;text-align:center">Monat</td>
-      <td style="padding:8px;border:1px solid #ccc;font-weight:bold">${tier.preis}&nbsp;€</td>
-    </tr>`
 
   const testphaseText = d.testphase !== 'keine' ? `
     <p>Dem Auftraggeber wird eine kostenlose Testphase von ${d.testphase} eingeräumt. Die Testphase beginnt mit Vertragsabschluss und ist Bestandteil der Grundlaufzeit von ${d.vertragslaufzeit} Monaten. Während der Testphase sind alle vertraglich vereinbarten Leistungen vollständig verfügbar.</p>` : ''
@@ -116,19 +102,14 @@ function buildContractHTML(d) {
   h2{font-size:11.5pt;font-weight:bold;margin-top:22px;border-bottom:1.5px solid #ddd;padding-bottom:4px;page-break-after:avoid;break-after:avoid}p{margin:5px 0;orphans:4;widows:4}h2+p{page-break-before:avoid}
   table{width:100%;border-collapse:collapse;margin:10px 0;font-size:10.5pt}
   th{background:#1E3A5F;color:#fff;padding:8px 10px;text-align:left}
-  td{border:1px solid #ccc;padding:7px 9px;vertical-align:top}
+  td{border:1px solid #ccc;padding:7px 9px;vertical-align:top}td[style*="border:none"]{border:none!important}
   p{margin:5px 0}
   .c{text-align:center}
-  @media print{@page{margin:2cm 2.5cm 2cm 2cm}thead{display:table-header-group}}
+  @media print{@page{margin:2cm 2.5cm 2cm 2cm}.logo-r{position:fixed;top:14px;right:28px;width:68px}}
 </style>
 </head>
 <body>
-<table style="width:100%;border-collapse:collapse;margin-bottom:16px">
-<thead><tr><td style="border:none;padding:0;text-align:right">
-  <img src="${d.logoSrc}" style="width:72px;filter:grayscale(100%)" alt="homie AI" />
-</td></tr></thead>
-<tbody><tr><td style="border:none;padding:0;height:0"></td></tr></tbody>
-</table>
+<div style="text-align:right;margin-bottom:12px"><img src="${d.logoSrc}" class="logo-r" style="width:72px;filter:grayscale(100%)" alt="homie AI"/></div>
 <h1>Software-Nutzungsvertrag: KI-Agent "homie AI"</h1>
 <p class="c" style="color:#555;font-size:10pt">Softwareanwendung für: ${d.firmenname}</p>
 <table style="width:100%;border-collapse:collapse;margin:16px 0">
@@ -171,7 +152,7 @@ ${(parseFloat(d.setupPreis.replace(',','.')) || 0) > 0 ? '<p>Der Auftragnehmer w
 <div style="page-break-inside:avoid;break-inside:avoid;border:1px solid #ccc;border-radius:4px;padding:14px 16px;margin-bottom:12px">
   <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
     <div><strong>Pos. 1 &nbsp;·&nbsp; Individuelles technisches Set-Up des KI-Agenten</strong> <span style="font-size:9.5pt;color:#666">— einmalig, pauschal</span></div>
-    <div style="font-size:11pt;font-weight:bold;white-space:nowrap;padding-left:24px">${d.setupPreisStaffelung ? `${d.setupPreis}&nbsp;€ bis ${d.setupGueltigBis} / danach ${d.setupRegelpreis}&nbsp;€` : `${d.setupPreis}&nbsp;€`}</div>
+    <div style="font-size:10.5pt;font-weight:bold;white-space:nowrap;padding-left:24px;line-height:1.6">${d.setupPreisStaffelung ? `Bei Unterschrift bis ${d.setupGueltigBis}:<br/><span style="font-size:12pt">${d.setupPreis}&nbsp;€</span><br/><span style="font-weight:normal;font-size:9.5pt;color:#555">Ab ${_setupAbDatum}: ${d.setupRegelpreis}&nbsp;€</span>` : `<span style="font-size:12pt">${d.setupPreis}&nbsp;€</span>`}</div>
   </div>
   <div style="font-size:10pt;color:#333;line-height:1.7">
     – Daten &amp; Inhalte des Auftraggebers anbinden und in einem individuellen Daten-Cluster anlegen<br/>
@@ -187,7 +168,7 @@ ${(parseFloat(d.setupPreis.replace(',','.')) || 0) > 0 ? '<p>Der Auftragnehmer w
   <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
     <div><strong>Pos. 2 &nbsp;·&nbsp; Leistungspaket ENTERPRISE</strong> <span style="font-size:9.5pt;color:#666">— monatlich</span></div>
     <div style="font-size:11pt;font-weight:bold;white-space:nowrap;padding-left:24px">
-      ${d.monatlichPreis}&nbsp;€ bis ${d.sofortpreisGueltigBis} / danach ${_regelpreisStr}&nbsp;€
+      Bei Unterschrift bis ${d.sofortpreisGueltigBis}:<br/><span style="font-size:12pt">${d.monatlichPreis}&nbsp;€ / Monat</span><br/><span style="font-weight:normal;font-size:9.5pt;color:#555">Ab ${_abDatum}: ${_regelpreisStr}&nbsp;€ / Monat (Regelpreis)</span>
     </div>
   </div>
   <div style="font-size:10pt;color:#333;line-height:1.7">
@@ -210,35 +191,6 @@ ${(parseFloat(d.setupPreis.replace(',','.')) || 0) > 0 ? '<p>Der Auftragnehmer w
 
 <p style="font-size:9.5pt;color:#555"><em>Alle Preise zzgl. gesetzlicher Mehrwertsteuer (19&nbsp;%)</em></p>
 
-<p><strong>Monatliche wiederkehrende Leistungen – Leistungspaket "ENTERPRISE":</strong></p>
-<table>
-<tr><th style="width:40px">Pos.</th><th>Leistung</th><th style="width:50px">Anz.</th><th style="width:80px">Einheit</th><th style="width:120px">Preis (netto)</th></tr>
-<tr>
-  <td><strong>2</strong></td>
-  <td><strong>Leistungspaket ENTERPRISE</strong>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;margin-top:8px;font-size:10pt;line-height:1.5">
-    <div>
-      <strong>Umfang</strong><br/>
-      ${d.kiAssistenten} KI-Agenten<br/>
-      ${d.produktseiten} Produktdetailseiten mit KI-Fragen<br/>
-      Inkl. ${d.nachrichtenProMonat} Nachrichten/Monat<br/>
-      Je weitere Nachricht: ${d.preisProNachricht}&nbsp;€
-    </div>
-    <div>
-      <strong>Data Dashboard</strong><br/>
-      – Live-Einsicht Kunden-Interaktionen &amp; Nutzerbewertungen<br/>
-      – Auswertung der Kunden-Interaktionen<br/>
-      – Individuelle Einstellungen | bis zu 10 Zugänge
-    </div>
-  </div>
-  <div style="margin-top:8px;font-size:10pt;line-height:1.5">
-    <strong>Inklusivleistungen:</strong> White-Label KI-Agenten-Lösung · Individuelle Tonalität · 24/7 Live-Daten Abgleich &amp; Verfügbarkeit · Voice- &amp; Texteingabe in &gt;50 Sprachen
-  </div></td>
-  <td style="text-align:center">1</td><td style="text-align:center">Monat</td><td><strong>${d.monatlichPreis}&nbsp;€</strong><div style="font-size:9.5pt;color:#666;margin-top:3px">Sofortpreis gültig bis ${d.sofortpreisGueltigBis}</div><strong>${_regelpreisStr}&nbsp;€</strong><div style="font-size:9.5pt;color:#666;margin-top:3px">Regelpreis ab ${_abDatum}</div></td>
-</tr>
-${serviceRow}
-</table>
-<p><em>Alle Preise zzgl. gesetzlicher Mehrwertsteuer (19%)</em></p>
 
 <h2>§5 Vertragslaufzeit und Kündigung</h2>
 <p>Der Softwarenutzungsvertrag wird für eine Laufzeit von ${d.vertragslaufzeit} Monaten geschlossen (Grundlaufzeit) und kann beiderseitig mit einer Kündigungsfrist von 3 Monaten zum Ende der Grundlaufzeit gekündigt werden. Wird der Vertrag nicht gekündigt, verlängert sich der Vertrag um weitere ${d.vertragslaufzeit} Monate mit gleicher Kündigungsfrist.</p>
@@ -1024,9 +976,10 @@ baoo Sales Team`)
             <div style={{ color: '#78350F', fontSize: 13.5, lineHeight: 1.8 }}>
               <div>1. Kundenordner unter <strong>Offene Verträge</strong> in Google Drive anlegen</div>
               <div>2. Docs-Datei (.html) herunterladen → in den Ordner hochladen → mit <strong>Google Docs</strong> öffnen</div>
-              <div>3. In Google Docs: <strong>Extras → eSignature</strong> → Unterschriftsfeld für <strong>GF Marco Werner</strong> setzen</div>
-              <div>4. Signing-Anfrage absenden — Marco erhält einen Link per E-Mail zur Unterzeichnung</div>
-              <div>5. Nach Unterzeichnung: fertig signiertes Dokument + <strong>AVV</strong> an Kunden senden</div>
+              <div>3. In Google Docs: <strong>Einfügen → Kopf- und Fußzeile → Kopfzeile</strong> → homie AI Logo einfügen und rechtsbündig ausrichten (einmalig pro Dokument, dauert ~30 Sekunden)</div>
+              <div>4. In Google Docs: <strong>Extras → eSignature</strong> → Unterschriftsfeld für <strong>GF Marco Werner</strong> setzen</div>
+              <div>5. Signing-Anfrage absenden — Marco erhält einen Link per E-Mail zur Unterzeichnung</div>
+              <div>6. Nach Unterzeichnung: fertig signiertes Dokument + <strong>AVV</strong> an Kunden senden</div>
             </div>
           </div>
 
