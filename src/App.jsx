@@ -247,22 +247,25 @@ ${d.sonstiges ? `
 <p>${d.sonstiges.replace(/\n/g, '<br/>')}</p>
 ` : ''}
 
-<p style="margin-top:48px;font-size:10pt;color:#555">Köln, den ${d.vertragsdatum}</p>
-
-<table style="width:100%;margin-top:32px;border-collapse:collapse">
+<div style="page-break-inside:avoid;break-inside:avoid;margin-top:48px">
+<p style="font-size:10pt;color:#555;margin-bottom:32px">Köln, den ${d.vertragsdatum}</p>
+<table style="width:100%;border-collapse:collapse;table-layout:fixed">
 <tr>
-  <td style="width:50%;border:none;padding:0;padding-right:40px;vertical-align:top">
-    <div style="border-bottom:1px solid #333;width:220px;margin-bottom:7px">&nbsp;</div>
-    <div style="font-size:10pt"><strong>${d.firmenname}</strong></div>
-    <div style="font-size:10pt;color:#555">${d.unterzeichner1Name} · ${d.unterzeichner1Position}</div>
+  <td style="width:50%;border:none;padding:0;padding-right:48px;vertical-align:bottom">
+    <div style="height:48px">&nbsp;</div>
+    <div style="border-bottom:1.5px solid #333;width:100%;margin-bottom:8px">&nbsp;</div>
+    <div style="font-size:10pt;font-weight:bold">${d.firmenname}</div>
+    <div style="font-size:10pt;color:#555;margin-top:2px">${d.unterzeichner1Name} · ${d.unterzeichner1Position}</div>
   </td>
-  <td style="width:50%;border:none;padding:0;vertical-align:top">
-    <div style="border-bottom:1px solid #333;width:220px;margin-bottom:7px">&nbsp;</div>
-    <div style="font-size:10pt"><strong>baoo Technologies GmbH</strong></div>
-    <div style="font-size:10pt;color:#555">${d.gfName} · ${d.gfPosition}</div>
+  <td style="width:50%;border:none;padding:0;vertical-align:bottom">
+    <div style="height:48px">&nbsp;</div>
+    <div style="border-bottom:1.5px solid #333;width:100%;margin-bottom:8px">&nbsp;</div>
+    <div style="font-size:10pt;font-weight:bold">baoo Technologies GmbH</div>
+    <div style="font-size:10pt;color:#555;margin-top:2px">${d.gfName} · ${d.gfPosition}</div>
   </td>
 </tr>
 </table>
+</div>
 
 ${sig2}
 <p style="margin-top:28px;font-size:9pt;color:#888">baoo Technologies GmbH &nbsp;|&nbsp; c/o Projekton, Salierring 32, 50677 Köln</p>
